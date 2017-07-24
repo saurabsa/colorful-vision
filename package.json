@@ -1,0 +1,28 @@
+{
+  "name": "colorful-vision",
+  "version": "0.0.1",
+  "author": {
+    "name": "Microsoft Corporation",
+    "email": "@microsoft.com",
+    "url": "https://github.com/vishrutshah/colorful-vision"
+  },
+  "description": "A colorful vision",
+  "license": "MIT",
+  "dependencies": {
+    "pretty-bytes": "^2.0.1"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^0.35.2"
+  },
+  "homepage": "https://github.com/vishrutshah/colorful-vision",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vishrutshah/colorful-vision.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vishrutshah/colorful-vision/issues"
+  },
+  "scripts": {
+    "start": "electron main.js"
+  }
+}
