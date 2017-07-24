@@ -8,7 +8,7 @@
     var canvas, ctx;
 
     // Variables to keep track of the mouse position and left-button status 
-    var mouseX, mouseY, mouseDown = 0;
+    var mouseX, mouseY, mouseDown = 0, MOUSE_SIZE = 5;
 
     // Variables to keep track of the touch position
     var touchX, touchY;
@@ -37,7 +37,7 @@
     // Keep track of the mouse button being pressed and draw a dot at current location
     function sketchpad_mouseDown() {
       mouseDown = 1;
-      drawDot(ctx, mouseX, mouseY, 12);
+      drawDot(ctx, mouseX, mouseY, MOUSE_SIZE);
     }
 
     // Keep track of the mouse button being released
@@ -52,7 +52,7 @@
 
       // Draw a dot if the mouse button is currently being pressed
       if (mouseDown == 1) {
-        drawDot(ctx, mouseX, mouseY, 12);
+        drawDot(ctx, mouseX, mouseY, MOUSE_SIZE);
       }
     }
 
@@ -76,7 +76,7 @@
       // Update the touch co-ordinates
       getTouchPos();
 
-      drawDot(ctx, touchX, touchY, 12);
+      drawDot(ctx, touchX, touchY, MOUSE_SIZE);
 
       // Prevents an additional mousedown event being triggered
       event.preventDefault();
@@ -88,7 +88,7 @@
       getTouchPos(e);
 
       // During a touchmove event, unlike a mousemove event, we don't need to check if the touch is engaged, since there will always be contact with the screen by definition.
-      drawDot(ctx, touchX, touchY, 12);
+      drawDot(ctx, touchX, touchY, MOUSE_SIZE);
 
       // Prevent a scrolling action as a result of this touchmove triggering.
       event.preventDefault();
@@ -114,6 +114,9 @@
 
     // Set-up the canvas and add our event handlers after the page has loaded
     function init() {
+      // // resize the canvas to fill browser window dynamically
+      // window.addEventListener('resize', resizeCanvas, false);
+
       // Get the specific canvas element from the HTML document
       canvas = document.getElementById('sketchpad');
 
@@ -132,6 +135,16 @@
         canvas.addEventListener('touchstart', sketchpad_touchStart, false);
         canvas.addEventListener('touchmove', sketchpad_touchMove, false);
       }
+
+      resizeCanvas(canvas);
+    }
+
+    function resizeCanvas(canvas) {
+      console.log(`resizing...`);
+      canvas.width = window.innerWidth * 0.75;
+      canvas.height = window.innerHeight;
+      console.log(`${canvas.width}`);
+      console.log(`${canvas.height}`);
     }
   </script>
 
@@ -150,25 +163,25 @@
 
     .leftside {
       float: left;
-      width: 220px;
-      height: 285px;
+      width: 20%;
+      height: 100%;
       background-color: #def;
-      padding: 10px;
-      border-radius: 4px;
+      padding: 1%;
+      border-radius: 1%;
     }
 
     .rightside {
-      float: left;
-      margin-left: 10px;
+      float: right;
+      margin-left: 1%;
     }
 
     #sketchpad {
       float: left;
-      height: 300px;
-      width: 400px;
       border: 2px solid #888;
-      border-radius: 4px;
-      position: relative;
+      border-radius: 1%;
+      /* position: relative; */
+      height: 100%;
+      width: 100%;
       /* Necessary for correct mouse co-ords in Firefox */
     }
 
@@ -190,8 +203,8 @@
       <input type="submit" value="Clear Sketchpad" id="clearbutton" onclick="clearCanvas(canvas,ctx);">
     </div>
     <div class="rightside">
-      <canvas id="sketchpad" height="300" width="400">
-      </canvas>
+      <!-- <input type="submit" value="Clear Sketchpad" id="clearbutton" onclick="clearCanvas(canvas,ctx);"> -->
+      <canvas id="sketchpad"> </canvas>
     </div>
   </div>
 </body>
