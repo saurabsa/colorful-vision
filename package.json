@@ -12,7 +12,7 @@
     "pretty-bytes": "^2.0.1"
   },
   "devDependencies": {
-    "electron-prebuilt": "^0.35.2"
+    "electron": "~1.6.2"
   },
   "homepage": "https://github.com/vishrutshah/colorful-vision",
   "repository": {
@@ -22,7 +22,8 @@
   "bugs": {
     "url": "https://github.com/vishrutshah/colorful-vision/issues"
   },
+  "main": "main.js",
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron ."
   }
 }
