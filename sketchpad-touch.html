@@ -13,7 +13,7 @@
     var canvas, ctx;
 
     // Variables to keep track of the mouse position and left-button status 
-    var mouseX, mouseY, mouseDown = 0, MOUSE_SIZE = 1;
+    var mouseX, mouseY, mouseDown = 0, MOUSE_SIZE = 5;
 
     // Variables to keep track of the touch position
     var touchX, touchY;
@@ -52,7 +52,36 @@
         for (const point of s) {
           drawDot(ctx, point.x, point.y, MOUSE_SIZE, true);
         }
+        for (const i in s) {
+          smoothen(ctx, s, '#FFFFFF');
+        }
       }
+    }
+
+    function smoothen(ctx, stack, color) {
+      ctx.beginPath();
+      ctx.strokeStyle = '#000000';
+      if (color) {
+        ctx.strokeStyle = color;
+      }
+      var previousPoint = stack[0];
+      ctx.moveTo(previousPoint.x, previousPoint.y);
+
+      for (var i = 1; i < stack.length - 2; i++) {
+        var c = (stack[i].x + stack[i + 1].x) / 2;
+        var d = (stack[i].y + stack[i + 1].y) / 2;
+        ctx.quadraticCurveTo(stack[i].x, stack[i].y, c, d);
+      }
+
+      // For the last 2 points
+      ctx.quadraticCurveTo(
+        stack[i].x,
+        stack[i].y,
+        stack[i + 1].x,
+        stack[i + 1].y
+      );
+      ctx.lineWidth = MOUSE_SIZE;
+      ctx.stroke();
     }
 
     // Keep track of the mouse button being pressed and draw a dot at current location
@@ -60,7 +89,6 @@
       mouseDown = 1;
       stack = [];
       stack.push({ x: mouseX, y: mouseY });
-
       drawDot(ctx, mouseX, mouseY, MOUSE_SIZE, false);
 
       setInstruction('');
@@ -74,27 +102,12 @@
     // Keep track of the mouse button being released
     function sketchpad_mouseUp() {
       if (mouseDown != 0) {
+        for (const point of stack) {
+          drawDot(ctx, point.x, point.y, MOUSE_SIZE, true);
+        }
         arrayOfStack.push(stack);
         if (stack.length > 1) {
-          ctx.beginPath();
-          var previousPoint = stack[0];
-          ctx.moveTo(previousPoint.x, previousPoint.y);
-
-          for (var i = 1; i < stack.length - 2; i++) {
-            var c = (stack[i].x + stack[i + 1].x) / 2;
-            var d = (stack[i].y + stack[i + 1].y) / 2;
-            ctx.quadraticCurveTo(stack[i].x, stack[i].y, c, d);
-          }
-
-          // For the last 2 points
-          ctx.quadraticCurveTo(
-            stack[i].x,
-            stack[i].y,
-            stack[i + 1].x,
-            stack[i + 1].y
-          );
-          ctx.stroke();
-
+          smoothen(ctx, stack);
           checkForTutorialScore(stack);
         }
       }
@@ -183,7 +196,7 @@
     // Set-up the canvas and add our event handlers after the page has loaded
     function init() {
       // // resize the canvas to fill browser window dynamically
-      // window.addEventListener('resize', resizeCanvas, false);
+      window.addEventListener('resize', resizeCanvas, false);
 
       // Get the specific canvas element from the HTML document
       canvas = document.getElementById('sketchpad');
@@ -204,15 +217,15 @@
         canvas.addEventListener('touchmove', sketchpad_touchMove, false);
       }
 
-      resizeCanvas(canvas);
+      resizeCanvas();
     }
 
-    function resizeCanvas(canvas) {
+    function resizeCanvas() {
       console.log(`resizing...`);
       canvas.width = window.innerWidth * 0.75;
       canvas.height = window.innerHeight;
-      console.log(`${canvas.width}`);
-      console.log(`${canvas.height}`);
+      console.log(`width: ${canvas.width}`);
+      console.log(`height: ${canvas.height}`);
     }
   </script>
 
@@ -263,7 +276,7 @@
   </style>
 </head>
 
-<body onload="init()">
+<body>
   <div id="sketchpadapp">
     <div class="leftside">
       Colorful Vision SketchPad.<br/><br/> Draw something by tapping or dragging.<br/><br/> Works on iOS, Android and desktop/laptop
@@ -274,10 +287,12 @@
       <p>Instructions: <var id="instructionVar"></var></p>
     </div>
     <div class="rightside">
-      <!-- <input type="submit" value="Clear Sketchpad" id="clearbutton" onclick="clearCanvas(canvas,ctx);"> -->
       <canvas id="sketchpad"> </canvas>
     </div>
   </div>
+  <script>
+    init();
+  </script>
 </body>
 
 </html>
