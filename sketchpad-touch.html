@@ -12,7 +12,7 @@
     var canvas, ctx;
 
     // Variables to keep track of the mouse position and left-button status 
-    var mouseX, mouseY, mouseDown = 0, MOUSE_SIZE = 1;
+    var mouseX, mouseY, mouseDown = 0, MOUSE_SIZE = 5;
 
     // Variables to keep track of the touch position
     var touchX, touchY;
@@ -78,6 +78,7 @@
         stack[i + 1].x,
         stack[i + 1].y
       );
+      ctx.lineWidth = MOUSE_SIZE;
       ctx.stroke();
     }
 
