@@ -13,7 +13,7 @@
     var canvas, ctx;
 
     // Variables to keep track of the mouse position and left-button status 
-    var mouseX, mouseY, mouseDown = 0, MOUSE_SIZE = 5;
+    var mouseX, mouseY, mouseDown = 0, MOUSE_SIZE = 5, drawMode = true;
 
     // Variables to keep track of the touch position
     var touchX, touchY;
@@ -64,8 +64,8 @@
       if (color) {
         ctx.strokeStyle = color;
       }
-      var previousPoint = stack[0];
-      ctx.moveTo(previousPoint.x, previousPoint.y);
+      // var previousPoint = stack[0];
+      // ctx.moveTo(previousPoint.x, previousPoint.y);
 
       for (var i = 1; i < stack.length - 2; i++) {
         var c = (stack[i].x + stack[i + 1].x) / 2;
@@ -86,6 +86,7 @@
 
     // Keep track of the mouse button being pressed and draw a dot at current location
     function sketchpad_mouseDown() {
+      if (!drawMode) return;
       mouseDown = 1;
       stack = [];
       stack.push({ x: mouseX, y: mouseY });
@@ -101,6 +102,7 @@
 
     // Keep track of the mouse button being released
     function sketchpad_mouseUp() {
+      if (!drawMode) return;
       if (mouseDown != 0) {
         for (const point of stack) {
           drawDot(ctx, point.x, point.y, MOUSE_SIZE, true);
@@ -116,6 +118,7 @@
 
     // Keep track of the mouse position and draw a dot if mouse button is currently pressed
     function sketchpad_mouseMove(e) {
+      if (!drawMode) return;
       // Update the mouse co-ordinates when moved
       getMousePos(e);
 
@@ -141,48 +144,64 @@
     }
 
     // Draw something when a touch start is detected
-    function sketchpad_touchStart() {
-      // Update the touch co-ordinates
-      getTouchPos();
+    // function sketchpad_touchStart() {
+    //   // Update the touch co-ordinates
+    //   getTouchPos();
 
-      drawDot(ctx, touchX, touchY, MOUSE_SIZE, false);
+    //   drawDot(ctx, touchX, touchY, MOUSE_SIZE, false);
 
-      if (stack.length) {
-        arrayOfStack.push(stack);
-        stack = [];
-      }
+    //   if (stack.length) {
+    //     arrayOfStack.push(stack);
+    //     stack = [];
+    //   }
 
-      stack.push({ x: touchX, y: touchY });
+    //   stack.push({ x: touchX, y: touchY });
 
-      // Prevents an additional mousedown event being triggered
-      event.preventDefault();
-    }
+    //   // Prevents an additional mousedown event being triggered
+    //   event.preventDefault();
+    // }
 
     // Draw something and prevent the default scrolling when touch movement is detected
-    function sketchpad_touchMove(e) {
-      // Update the touch co-ordinates
-      getTouchPos(e);
+    // function sketchpad_touchMove(e) {
+    //   // Update the touch co-ordinates
+    //   getTouchPos(e);
 
-      // During a touchmove event, unlike a mousemove event, we don't need to check if the touch is engaged, since there will always be contact with the screen by definition.
-      move();
+    // During a touchmove event, unlike a mousemove event, we don't need to check if the touch is engaged, since there will always be contact with the screen by definition.
+    //   move();
+    //   drawDot(ctx, touchX, touchY, MOUSE_SIZE, false);
+    //   stack.push({ x: mouseX, y: mouseY });
 
-      // Prevent a scrolling action as a result of this touchmove triggering.
-      event.preventDefault();
-    }
+    //   // Prevent a scrolling action as a result of this touchmove triggering.
+    //   event.preventDefault();
+    // }
 
     // Get the touch position relative to the top-left of the canvas
     // When we get the raw values of pageX and pageY below, they take into account the scrolling on the page
     // but not the position relative to our target div. We'll adjust them using "target.offsetLeft" and
     // "target.offsetTop" to get the correct values in relation to the top left of the canvas.
-    function getTouchPos(e) {
-      if (!e)
-        var e = event;
+    // function getTouchPos(e) {
+    //   if (!e)
+    //     var e = event;
 
-      if (e.touches) {
-        if (e.touches.length == 1) { // Only deal with one finger
-          var touch = e.touches[0]; // Get the information for finger #1
-          touchX = touch.pageX - touch.target.offsetLeft;
-          touchY = touch.pageY - touch.target.offsetTop;
+    //   if (e.touches) {
+    //     if (e.touches.length == 1) { // Only deal with one finger
+    //       var touch = e.touches[0]; // Get the information for finger #1
+    //       touchX = touch.pageX - touch.target.offsetLeft;
+    //       touchY = touch.pageY - touch.target.offsetTop;
+    //     }
+    //   }
+    // }
+
+    function isDrawMode(e) {
+      if (e) {
+        console.dir(e, { depth: null });
+        if (e.code && e.code === "Space") {
+          drawMode = !drawMode;
+          var modeAsString = drawMode ? "Draw" : "Placement";
+          document.getElementById("mode").innerText = "Current Mode: " + modeAsString;
+          if (!drawMode) {
+            stack = [];
+          }
         }
       }
     }
@@ -213,19 +232,16 @@
         window.addEventListener('mouseup', sketchpad_mouseUp, false);
 
         // React to touch events on the canvas
-        canvas.addEventListener('touchstart', sketchpad_touchStart, false);
-        canvas.addEventListener('touchmove', sketchpad_touchMove, false);
+        // canvas.addEventListener('touchstart', sketchpad_touchStart, false);
+        // canvas.addEventListener('touchmove', sketchpad_touchMove, false);
       }
-
+      document.addEventListener('keypress', isDrawMode, false);
       resizeCanvas();
     }
 
     function resizeCanvas() {
-      console.log(`resizing...`);
       canvas.width = window.innerWidth * 0.75;
       canvas.height = window.innerHeight;
-      console.log(`width: ${canvas.width}`);
-      console.log(`height: ${canvas.height}`);
     }
   </script>
 
@@ -282,7 +298,8 @@
       Colorful Vision SketchPad.<br/><br/> Draw something by tapping or dragging.<br/><br/> Works on iOS, Android and desktop/laptop
       touchscreens using Chrome/Firefox/Safari.<br/><br/>
       <input type="submit" value="Clear Sketchpad" id="clearbutton" onclick="clearCanvas(canvas,ctx);">
-      <input type="submit" value="Undo" id="clearbutton" onclick="undo(canvas,ctx);">
+      <input type="submit" value="Undo" id="clearbutton" onclick="undo(canvas,ctx);"><br/><br/>
+      <label for="mode" id="mode">Current Mode: Draw</label><br/><br/>
       <input type="submit" value="Start Tutorial" id="clearbutton" onclick="startTutorial(canvas,ctx);">
       <p>Instructions: <var id="instructionVar"></var></p>
     </div>
