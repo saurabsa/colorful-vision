@@ -210,8 +210,8 @@
       console.log(`resizing...`);
       canvas.width = window.innerWidth * 0.75;
       canvas.height = window.innerHeight;
-      console.log(`${canvas.width}`);
-      console.log(`${canvas.height}`);
+      console.log(`width: ${canvas.width}`);
+      console.log(`height: ${canvas.height}`);
     }
   </script>
 
@@ -262,7 +262,7 @@
   </style>
 </head>
 
-<body onload="init()">
+<body>
   <div id="sketchpadapp">
     <div class="leftside">
       Colorful Vision SketchPad.<br/><br/> Draw something by tapping or dragging.<br/><br/> Works on iOS, Android and desktop/laptop
@@ -271,10 +271,12 @@
       <input type="submit" value="Undo" id="clearbutton" onclick="undo(canvas,ctx);">
     </div>
     <div class="rightside">
-      <!-- <input type="submit" value="Clear Sketchpad" id="clearbutton" onclick="clearCanvas(canvas,ctx);"> -->
       <canvas id="sketchpad"> </canvas>
     </div>
   </div>
+  <script>
+    init();
+  </script>
 </body>
 
 </html>
