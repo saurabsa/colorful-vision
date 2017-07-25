@@ -182,7 +182,7 @@
     // Set-up the canvas and add our event handlers after the page has loaded
     function init() {
       // // resize the canvas to fill browser window dynamically
-      // window.addEventListener('resize', resizeCanvas, false);
+      window.addEventListener('resize', resizeCanvas, false);
 
       // Get the specific canvas element from the HTML document
       canvas = document.getElementById('sketchpad');
@@ -203,10 +203,10 @@
         canvas.addEventListener('touchmove', sketchpad_touchMove, false);
       }
 
-      resizeCanvas(canvas);
+      resizeCanvas();
     }
 
-    function resizeCanvas(canvas) {
+    function resizeCanvas() {
       console.log(`resizing...`);
       canvas.width = window.innerWidth * 0.75;
       canvas.height = window.innerHeight;
