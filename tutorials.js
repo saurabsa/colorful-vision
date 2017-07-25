@@ -2,7 +2,7 @@ var tutorialMode = false;
 var currentTutorial;
 var currentTutorialIndex = 0;
 var tutorials = [];
-var unit = 100;
+var unit = 150;
 
 // start the Tutorial
 function startTutorial(canvas, ctx) {
@@ -39,23 +39,23 @@ function resetTutorials() {
 function initializeTutorials() {
   var tutorial = new Tutorial("horizontal line", "1", "0", "h",
     "Move straight one unit from left to right on start",
-    "The angle was not as accepted. Draw a horizontal line.",
-    "The length was not as accepted. Draw a horizontal line.",
-    "The orientation was not as accepted. Draw a horizontal line.", 0);
+    "The angle was not as accepted. Redraw a horizontal line.",
+    "The length was not as accepted. Redraw a horizontal line.",
+    "The orientation was not as accepted. Redraw a horizontal line.", 0);
   tutorials.push(tutorial);
 
   tutorial = new Tutorial("vertical line", "1", "90", "v",
     "Move straight one unit from up to down on start",
-    "The angle was not as accepted. Draw a vertical line.",
-    "The length was not as accepted. Draw a vertical line.",
-    "The orientation was not as accepted. Draw a vertical line.", 0);
+    "The angle was not as accepted. Redraw a vertical line.",
+    "The length was not as accepted. Redraw a vertical line.",
+    "The orientation was not as accepted. Redraw a vertical line.", 0);
   tutorials.push(tutorial);
 
   tutorial = new Tutorial("inclined line", "1", "45", "d",
-    "Move inclined (~45 degrees) one unit from left down to right up on start",
-    "The angle was not as accepted. Draw an inclined line.",
-    "The length was not as accepted. Draw an inclined line.",
-    "The orientation was not as accepted. Draw an inclined line.", 0);
+    "Move inclined, 45 degrees, one unit from left down to right up on start",
+    "The angle was not as accepted. Redraw an inclined line.",
+    "The length was not as accepted. Redraw an inclined line.",
+    "The orientation was not as accepted. Redraw an inclined line.", 0);
   tutorials.push(tutorial);
 }
 
@@ -111,6 +111,12 @@ function checkOrientation(stack) {
       return true;
     }
     else {
+      if (slope < 0.75) {
+        setInstruction("Line too low. Increase the angle of inclination. ");
+      }
+      else {
+        setInstruction("Line too high. Decrease the angle of inclination. ");
+      }
       return false;
     }
   }
@@ -152,7 +158,7 @@ function checkForTutorialScore(stack) {
   }
 
   if (!checkOrientation(stack)) {
-    setInstruction(currentTutorial.orientation_error_instructions);
+    appendInstruction(currentTutorial.orientation_error_instructions);
     currentTutorial.score = 0;
     return;
   }
