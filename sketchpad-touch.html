@@ -3,6 +3,7 @@
 <head>
   <title>Sketchpad</title>
 
+  <script src="tutorials.js"></script>
   <script type="text/javascript">
     // Stack of last objects
     var stack = [];
@@ -40,6 +41,7 @@
     // Clear the canvas context using the canvas width and height
     function clearCanvas(canvas, ctx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      setInstruction('');
     }
 
     // Undo the canvas context using the canvas width and height
@@ -60,6 +62,13 @@
       stack.push({ x: mouseX, y: mouseY });
 
       drawDot(ctx, mouseX, mouseY, MOUSE_SIZE, false);
+
+      setInstruction('');
+    }
+
+    function setInstruction(instruction) {
+      var x = document.getElementById("instructionVar");
+      x.innerText = instruction;
     }
 
     // Keep track of the mouse button being released
@@ -85,6 +94,8 @@
             stack[i + 1].y
           );
           ctx.stroke();
+
+          checkForTutorialScore(stack);
         }
       }
       mouseDown = 0;
@@ -97,8 +108,7 @@
 
       // Draw a dot if the mouse button is currently being pressed
       if (mouseDown == 1) {
-        drawDot(ctx, mouseX, mouseY, MOUSE_SIZE, false);
-        stack.push({ x: mouseX, y: mouseY });
+        move();
       }
     }
 
@@ -141,8 +151,7 @@
       getTouchPos(e);
 
       // During a touchmove event, unlike a mousemove event, we don't need to check if the touch is engaged, since there will always be contact with the screen by definition.
-      drawDot(ctx, touchX, touchY, MOUSE_SIZE, false);
-      stack.push({ x: mouseX, y: mouseY });
+      move();
 
       // Prevent a scrolling action as a result of this touchmove triggering.
       event.preventDefault();
@@ -165,6 +174,11 @@
       }
     }
 
+    function move() {
+      drawDot(ctx, mouseX, mouseY, MOUSE_SIZE, false);
+      stack.push({ x: mouseX, y: mouseY });
+      checkForLineLength(stack);
+    }
 
     // Set-up the canvas and add our event handlers after the page has loaded
     function init() {
@@ -256,6 +270,8 @@
       touchscreens using Chrome/Firefox/Safari.<br/><br/>
       <input type="submit" value="Clear Sketchpad" id="clearbutton" onclick="clearCanvas(canvas,ctx);">
       <input type="submit" value="Undo" id="clearbutton" onclick="undo(canvas,ctx);">
+      <input type="submit" value="Start Tutorial" id="clearbutton" onclick="startTutorial(canvas,ctx);">
+      <p>Instructions: <var id="instructionVar"></var></p>
     </div>
     <div class="rightside">
       <!-- <input type="submit" value="Clear Sketchpad" id="clearbutton" onclick="clearCanvas(canvas,ctx);"> -->
