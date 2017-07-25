@@ -110,10 +110,11 @@
         arrayOfStack.push(stack);
         if (stack.length > 1) {
           smoothen(ctx, stack);
+          mouseDown = 0;
           checkForTutorialScore(stack);
         }
       }
-      mouseDown = 0;
+
     }
 
     // Keep track of the mouse position and draw a dot if mouse button is currently pressed
@@ -199,9 +200,9 @@
           drawMode = !drawMode;
           var modeAsString = drawMode ? "Draw" : "Placement";
           document.getElementById("mode").innerText = "Current Mode: " + modeAsString;
-          if (!drawMode) {
-            stack = [];
-          }
+          // if (!drawMode) {
+          //   stack = [];
+          // }
         }
       }
     }

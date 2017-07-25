@@ -23,18 +23,39 @@ function startTutorial(canvas, ctx) {
   setInstruction('Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
 }
 
-// Reset the tutorials
-function resetTutorials() {
+function resetCounters() {
   tutorialMode = false;
   tutorials = [];
   currentTutorialIndex = 0;
-  setInstruction("All the tutorials reset. Restart the tutorials by clicking on 'Start Tutorials'.");
+  currentTutorial = null;
+}
+
+// Reset the tutorials
+function resetTutorials() {
+  resetCounters();
+  setInstruction("Tutorials reset. Restart the tutorials by clicking on 'Start Tutorials'.");
 }
 
 function initializeTutorials() {
-  var tutorial = new Tutorial("horizontal line", "1", "0", "h", "Move straight one unit from left to right on start", "The angle was not as accepted. Draw a horizontal line.", "The length was not as accepted. Draw a horizontal line.", "The orientation was not as accepted. Draw a horizontal line.", 0);
+  var tutorial = new Tutorial("horizontal line", "1", "0", "h",
+    "Move straight one unit from left to right on start",
+    "The angle was not as accepted. Draw a horizontal line.",
+    "The length was not as accepted. Draw a horizontal line.",
+    "The orientation was not as accepted. Draw a horizontal line.", 0);
   tutorials.push(tutorial);
-  tutorial = new Tutorial("vertical line", "1", "90", "v", "Move straight one unit from up to down on start", "The angle was not as accepted. Draw a vertical line.", "The length was not as accepted. Draw a vertical line.", "The orientation was not as accepted. Draw a vertical line.", 0);
+
+  tutorial = new Tutorial("vertical line", "1", "90", "v",
+    "Move straight one unit from up to down on start",
+    "The angle was not as accepted. Draw a vertical line.",
+    "The length was not as accepted. Draw a vertical line.",
+    "The orientation was not as accepted. Draw a vertical line.", 0);
+  tutorials.push(tutorial);
+
+  tutorial = new Tutorial("inclined line", "1", "45", "d",
+    "Move inclined (~45 degrees) one unit from left down to right up on start",
+    "The angle was not as accepted. Draw an inclined line.",
+    "The length was not as accepted. Draw an inclined line.",
+    "The orientation was not as accepted. Draw an inclined line.", 0);
   tutorials.push(tutorial);
 }
 
@@ -56,23 +77,14 @@ function tutorialModeCheck() {
   }
 }
 
-function showTutorialList(evt) {
-  //var tutorials = ["./tutorials/horizontalLine.json"];
-  if (typeof window.FileReader !== 'function') {
-    alert("The file API isn't supported on this browser yet.");
-    return;
+function getSlope(stack, retAbs = false) {
+  denom = stack[stack.length - 1].x - stack[0].x;
+  if (denom == 0) {
+    throw new Error('Invalid dividend');
   }
-  var file = new File([""], "./tutorials/horizontalLine.json");
-  var fr = new FileReader();
-  var newArr = '';
-  fr.onload = function (event) {
-    // The file's text will be printed here
-    console.log(event.target.result)
-    var lines = event.target.result;
-    newArr = JSON.parse(lines);
-  };
-  fr.readAsText(file);
-  return newArr;
+  slope = (stack[stack.length - 1].y - stack[0].y) / denom;
+
+  return retAbs ? Math.abs(slope) : slope;
 }
 
 function checkOrientation(stack) {
@@ -93,7 +105,14 @@ function checkOrientation(stack) {
     }
   }
   else if (currentTutorial.orientation == "d") {
-
+    // Returns the absolute slope
+    slope = getSlope(stack, true);
+    if (slope >= 0.75 && slope <= 1.25) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 }
 
@@ -118,39 +137,43 @@ function acceptableLength(length) {
 }
 
 function checkForTutorialScore(stack) {
-  if (tutorialModeCheck()) {
-    if (!acceptableLength(stack.length)) {
-      setInstruction(currentTutorial.length_error_instructions);
-      currentTutorial.score = 0;
-      return;
-    }
-    else {
-      currentTutorial.score = 1;
-    }
-    if (!checkOrientation(stack)) {
-      setInstruction(currentTutorial.orientation_error_instructions);
-      currentTutorial.score = 0;
-      return;
-    }
-    else {
-      currentTutorial.score = 1;
-    }
+  if (!tutorialModeCheck()) {
+    // Return if this is not tutorial
+    return;
+  }
 
-    if (currentTutorial.score == 1) {
-      if (tutorials.length > currentTutorialIndex) {
-        currentTutorial = tutorials[currentTutorialIndex++];
-        setInstruction('Success! Tutorial ' + currentTutorialIndex + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
-      }
-      else {
-        setInstruction('Success!');
-        tutorialMode = false;
-        currentTutorialIndex = 0;
-      }
+  if (!acceptableLength(stack.length)) {
+    setInstruction(currentTutorial.length_error_instructions);
+    currentTutorial.score = 0;
+    return;
+  }
+  else {
+    currentTutorial.score = 1;
+  }
+
+  if (!checkOrientation(stack)) {
+    setInstruction(currentTutorial.orientation_error_instructions);
+    currentTutorial.score = 0;
+    return;
+  }
+  else {
+    currentTutorial.score = 1;
+  }
+
+  if (currentTutorial.score == 1) {
+    if (tutorials.length > currentTutorialIndex + 1) {
+      currentTutorial = tutorials[++currentTutorialIndex];
+      setInstruction('Success! Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
     }
     else {
-      setInstruction('Again Tutorial ' + currentTutorialIndex + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
+      setInstruction('Success!');
+      resetCounters();
     }
   }
+  else {
+    setInstruction('Again Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
+  }
+
 }
 
 function checkForLineLength(stack) {
