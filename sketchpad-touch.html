@@ -12,7 +12,7 @@
     var canvas, ctx;
 
     // Variables to keep track of the mouse position and left-button status 
-    var mouseX, mouseY, mouseDown = 0, MOUSE_SIZE = 2;
+    var mouseX, mouseY, mouseDown = 0, MOUSE_SIZE = 1;
 
     // Variables to keep track of the touch position
     var touchX, touchY;
@@ -66,6 +66,26 @@
     function sketchpad_mouseUp() {
       if (mouseDown != 0) {
         arrayOfStack.push(stack);
+        if (stack.length > 1) {
+          ctx.beginPath();
+          var previousPoint = stack[0];
+          ctx.moveTo(previousPoint.x, previousPoint.y);
+
+          for (var i = 1; i < stack.length - 2; i++) {
+            var c = (stack[i].x + stack[i + 1].x) / 2;
+            var d = (stack[i].y + stack[i + 1].y) / 2;
+            ctx.quadraticCurveTo(stack[i].x, stack[i].y, c, d);
+          }
+
+          // For the last 2 points
+          ctx.quadraticCurveTo(
+            stack[i].x,
+            stack[i].y,
+            stack[i + 1].x,
+            stack[i + 1].y
+          );
+          ctx.stroke();
+        }
       }
       mouseDown = 0;
     }
