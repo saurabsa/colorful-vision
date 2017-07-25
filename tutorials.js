@@ -7,11 +7,28 @@ var unit = 100;
 // start the Tutorial
 function startTutorial(canvas, ctx) {
   tutorialMode = true;
-  initializeTutorials();
-  if (tutorials.length > 0) {
-    currentTutorial = tutorials[currentTutorialIndex++];
+
+  // Initialize only the first time
+  if (tutorials.length == 0) {
+    initializeTutorials();
   }
-  setInstruction('Tutorial ' + currentTutorialIndex + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
+  else {
+    // Retrieve the most recently failed tutorial
+    currentTutorialIndex = getLastFailedTutorial();
+    if (currentTutorialIndex == -1) {
+      setInstruction("All the tutorials are passed. Yayy.. :-)");
+    }
+  }
+  currentTutorial = tutorials[currentTutorialIndex];
+  setInstruction('Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
+}
+
+// Reset the tutorials
+function resetTutorials() {
+  tutorialMode = false;
+  tutorials = [];
+  currentTutorialIndex = 0;
+  setInstruction("All the tutorials reset. Restart the tutorials by clicking on 'Start Tutorials'.");
 }
 
 function initializeTutorials() {
@@ -19,6 +36,18 @@ function initializeTutorials() {
   tutorials.push(tutorial);
   tutorial = new Tutorial("vertical line", "1", "90", "v", "Move straight one unit from up to down on start", "The angle was not as accepted. Draw a vertical line.", "The length was not as accepted. Draw a vertical line.", "The orientation was not as accepted. Draw a vertical line.", 0);
   tutorials.push(tutorial);
+}
+
+function getLastFailedTutorial() {
+  // Iterate over the tutorials and get the last failed one in the list
+  for (i = 0; i < tutorials.length; i++) {
+    if (tutorials[i].score == 0) {
+      return i;
+    }
+  }
+
+  // When all the tutorials are already passed
+  return -1;
 }
 
 function tutorialModeCheck() {
