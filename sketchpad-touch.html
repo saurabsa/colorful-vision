@@ -50,7 +50,35 @@
         for (const point of s) {
           drawDot(ctx, point.x, point.y, MOUSE_SIZE, true);
         }
+        for (const i in s) {
+          smoothen(ctx, s, '#FFFFFF');
+        }
       }
+    }
+
+    function smoothen(ctx, stack, color) {
+      ctx.beginPath();
+      ctx.strokeStyle = '#000000';
+      if (color) {
+        ctx.strokeStyle = color;
+      }
+      var previousPoint = stack[0];
+      ctx.moveTo(previousPoint.x, previousPoint.y);
+
+      for (var i = 1; i < stack.length - 2; i++) {
+        var c = (stack[i].x + stack[i + 1].x) / 2;
+        var d = (stack[i].y + stack[i + 1].y) / 2;
+        ctx.quadraticCurveTo(stack[i].x, stack[i].y, c, d);
+      }
+
+      // For the last 2 points
+      ctx.quadraticCurveTo(
+        stack[i].x,
+        stack[i].y,
+        stack[i + 1].x,
+        stack[i + 1].y
+      );
+      ctx.stroke();
     }
 
     // Keep track of the mouse button being pressed and draw a dot at current location
@@ -58,33 +86,18 @@
       mouseDown = 1;
       stack = [];
       stack.push({ x: mouseX, y: mouseY });
-
       drawDot(ctx, mouseX, mouseY, MOUSE_SIZE, false);
     }
 
     // Keep track of the mouse button being released
     function sketchpad_mouseUp() {
       if (mouseDown != 0) {
+        for (const point of stack) {
+          drawDot(ctx, point.x, point.y, MOUSE_SIZE, true);
+        }
         arrayOfStack.push(stack);
         if (stack.length > 1) {
-          ctx.beginPath();
-          var previousPoint = stack[0];
-          ctx.moveTo(previousPoint.x, previousPoint.y);
-
-          for (var i = 1; i < stack.length - 2; i++) {
-            var c = (stack[i].x + stack[i + 1].x) / 2;
-            var d = (stack[i].y + stack[i + 1].y) / 2;
-            ctx.quadraticCurveTo(stack[i].x, stack[i].y, c, d);
-          }
-
-          // For the last 2 points
-          ctx.quadraticCurveTo(
-            stack[i].x,
-            stack[i].y,
-            stack[i + 1].x,
-            stack[i + 1].y
-          );
-          ctx.stroke();
+          smoothen(ctx, stack);
         }
       }
       mouseDown = 0;
