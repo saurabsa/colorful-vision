@@ -115,6 +115,7 @@ function checkForTutorialScore(stack) {
       else {
         setInstruction('Success!');
         tutorialMode = false;
+        currentTutorialIndex = 0;
       }
     }
     else {
