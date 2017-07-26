@@ -216,9 +216,12 @@
           drawMode = !drawMode;
           var modeAsString = drawMode ? "Draw" : "Placement";
           document.getElementById("mode").innerText = "Current Mode: " + modeAsString;
-          // if (!drawMode) {
-          //   stack = [];
-          // }
+        }
+
+        if (e.keyCode) {
+          if (e.keyCode >= 49 && e.keyCode <= 57) {
+            document.getElementById(`tutorial${e.keyCode - 48}`).click();
+          }
         }
       }
     }
@@ -253,6 +256,7 @@
         // canvas.addEventListener('touchmove', sketchpad_touchMove, false);
       }
       document.addEventListener('keypress', isDrawMode, false);
+      addRadioButtons();
       resizeCanvas();
     }
 
@@ -287,6 +291,21 @@
       ctx.stroke();
 
       // setInstruction("Arc Smoothened");
+    }
+
+    function addRadioButtons() {
+      if (!tutorials || tutorials.length === 0) {
+        initializeTutorials();
+      }
+
+      var tutorialsDiv = document.getElementById("tutorials");
+      var innerHTML = '';
+
+      for (var i = 0; i < tutorials.length; i++) {
+        let tutorial = tutorials[i];
+        innerHTML = innerHTML.concat(`<input id="tutorial${tutorial.id}" type="radio" name="tutorial" value="${tutorial.id}"> ${tutorial.name} </input><br>`);
+      }
+      tutorialsDiv.innerHTML = `${innerHTML}`;
     }
   </script>
 
@@ -345,9 +364,16 @@
       <input type="submit" value="Clear Sketchpad" id="clearbutton" onclick="clearCanvas(canvas,ctx);">
       <input type="submit" value="Undo" id="clearbutton" onclick="undo(canvas,ctx);"><br/><br/>
       <label for="mode" id="mode">Current Mode: Draw</label><br/><br/>
-      <input type="submit" value="Start Tutorial" id="clearbutton" onclick="startTutorial(canvas,ctx);">
-      <input type="submit" value="Reset Tutorials" id="clearbutton" onclick="resetTutorials();">
+      <!-- <input type="submit" value="Start Tutorial" id="clearbutton" onclick="startTutorial(canvas,ctx);">
+      <input type="submit" value="Reset Tutorials" id="clearbutton" onclick="resetTutorials();"> -->
+      <input type="submit" value="Do Tutorial" id="clearbutton" onclick="doTutorial(canvas,ctx,6);">
       <p>Instructions: <var id="instructionVar"></var></p>
+      <div>
+        <label for="tutorials"> Tutorials Set </lable>
+          <div id="tutorials"> 
+
+          </div>
+      </div>
     </div>
     <div class="rightside">
       <canvas id="sketchpad"> </canvas>
