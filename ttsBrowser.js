@@ -7,25 +7,14 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 **/
 
-
+var access_token;
 function Synthesize(text) {
 
   // Note: The way to get api key:
   // Free: https://www.microsoft.com/cognitive-services/en-us/subscriptions?productId=/products/Bing.Speech.Preview
   // Paid: https://portal.azure.com/#create/Microsoft.CognitiveServices/apitype/Bing.Speech/pricingtier/S0
-  var apiKey = "7d10476149d3429db76c89490d866f6d";
-
   var post_speaker_data = `<?xml version="1.0"?><speak version="1.0" xml:lang="en-us"><voice xml:lang="en-us" xml:gender="Female" name="Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)">${text}</voice></speak>`;
-
-  var reqOptions = {
-    method: "POST",
-    headers: {
-      'Ocp-Apim-Subscription-Key': apiKey
-    }
-  };
-  fetch('https://api.cognitive.microsoft.com/sts/v1.0/issueToken', reqOptions).then((res) => {
-    return res.text();
-  }).then((access_token) => {
+  getAccessToken().then((access_token) => {
     const req = {
       method: "POST",
       body: post_speaker_data,
@@ -53,4 +42,35 @@ function Synthesize(text) {
   }).catch((err) => {
     console.dir(err, { depth: null });
   });
+}
+
+function getAccessToken() {
+  var apiKey = "7d10476149d3429db76c89490d866f6d";
+  var reqOptions = {
+    method: "POST",
+    headers: {
+      'Ocp-Apim-Subscription-Key': apiKey
+    }
+  };
+  if (!access_token) {
+    return fetch('https://api.cognitive.microsoft.com/sts/v1.0/issueToken', reqOptions).then((res) => {
+      return res.text();
+    }).then((token) => {
+      access_token = token;
+    });
+  } else {
+    return Promise.resolve(access_token);
+  }
+}
+
+function ab2str(buf) {
+  return String.fromCharCode.apply(null, new Uint16Array(buf));
+}
+function str2ab(str) {
+  var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
+  var bufView = new Uint16Array(buf);
+  for (var i = 0, strLen = str.length; i < strLen; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return buf
 }
