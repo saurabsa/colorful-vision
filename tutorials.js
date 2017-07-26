@@ -117,7 +117,7 @@ function getSlope(stack, retAbs = false) {
 
 function checkOrientation(stack) {
   if (currentTutorial.orientation == "h") {
-    if ((stack[stack.length - 1].x - stack[0].x) > (stack[stack.length - 1].y - stack[0].y)) {
+    if (Math.abs(stack[stack.length - 1].x - stack[0].x) > Math.abs(stack[stack.length - 1].y - stack[0].y)) {
       return true;
     }
     else {
@@ -125,7 +125,7 @@ function checkOrientation(stack) {
     }
   }
   else if (currentTutorial.orientation == "v") {
-    if ((stack[stack.length - 1].x - stack[0].x) < (stack[stack.length - 1].y - stack[0].y)) {
+    if (Math.abs(stack[stack.length - 1].x - stack[0].x) < Math.abs(stack[stack.length - 1].y - stack[0].y)) {
       return true;
     }
     else {
