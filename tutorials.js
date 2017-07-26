@@ -241,7 +241,7 @@ function checkForTutorialScore(stack) {
   else {
     setInstruction('Again Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
   }
-  clearCanvas(canvas, ctx);
+  clearCanvas(canvas, ctx, false);
 }
 
 function checkIfCoordInRange(mouseX, mouseY, lastPoint) {
