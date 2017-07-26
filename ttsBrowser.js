@@ -45,7 +45,7 @@ function Synthesize(text) {
 }
 
 function getAccessToken() {
-  var apiKey = "7d10476149d3429db76c89490d866f6d";
+  var apiKey = "0bdca40a997b4e8299e26c4068943921";
   var reqOptions = {
     method: "POST",
     headers: {
