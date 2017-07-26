@@ -19,7 +19,7 @@ function startTutorial(canvas, ctx) {
     // Retrieve the most recently failed tutorial
     currentTutorialIndex = getLastFailedTutorial();
     if (currentTutorialIndex == -1) {
-      setInstruction("All the tutorials are passed. Yayy.. :-)");
+      setInstruction("All the tutorials are passed. Yayy!");
     }
   }
   currentTutorial = tutorials[currentTutorialIndex];
@@ -43,7 +43,7 @@ function resetTutorials() {
 //exports.initializeTutorials = function initializeTutorials() {
 function initializeTutorials() {
   // Horizontal line
-  var tutorial = new Tutorial(1, "horizontal line", "1", "0", "h",
+  var tutorial = new Tutorial(1, "horizontal line", 1, "0", "h",
     "Move straight one unit from left to right",
     "The angle was not as accepted. Redraw a horizontal line.",
     "The length was not as accepted. Redraw a horizontal line.",
@@ -51,7 +51,7 @@ function initializeTutorials() {
   tutorials.push(tutorial);
 
   // Vertical line
-  tutorial = new Tutorial(2, "vertical line", "1", "90", "v",
+  tutorial = new Tutorial(2, "vertical line", 1, "90", "v",
     "Move straight one unit from up to down",
     "The angle was not as accepted. Redraw a vertical line.",
     "The length was not as accepted. Redraw a vertical line.",
@@ -59,7 +59,7 @@ function initializeTutorials() {
   tutorials.push(tutorial);
 
   // Left to right inclined line
-  tutorial = new Tutorial(3, "inclined line", "1", "45", "dr",
+  tutorial = new Tutorial(3, "inclined line", 1, "45", "dr",
     "Move inclined, 45 degrees, one unit from left down to right up",
     "The angle was not as accepted. Redraw an inclined line.",
     "The length was not as accepted. Redraw an inclined line.",
@@ -67,7 +67,7 @@ function initializeTutorials() {
   tutorials.push(tutorial);
 
   // Right to left inclined line
-  tutorial = new Tutorial(4, "inclined line", "1", "45", "dl",
+  tutorial = new Tutorial(4, "inclined line", 1, "45", "dl",
     "Move inclined, 45 degrees, one unit from right down to left up",
     "The angle was not as accepted. Redraw an inclined line.",
     "The length was not as accepted. Redraw an inclined line.",
@@ -75,96 +75,79 @@ function initializeTutorials() {
   tutorials.push(tutorial);
 
   // Connecting Points
-  tutorial = new Tutorial(5, "horizontal line", "1", "45", "h",
-    "Move straight one unit from left to right",
-    "The angle was not as accepted. Redraw a horizontal line.",
-    "The length was not as accepted. Redraw a horizontal line.",
-    "The orientation was not as accepted. Redraw a horizontal line.", false, 0);
-  tutorials.push(tutorial);
-
-  tutorial = new Tutorial(6, "connecting vertical line", "1", "90", "v",
+  var con2 = new Tutorial(6, "connecting line 2", 1, "90", "v",
     "Move straight one unit from up to down from the connecting point",
     "The angle was not as accepted. Redraw a vertical line from the connecting point.",
     "The length was not as accepted. Redraw a vertical line from the connecting point.",
     "The orientation was not as accepted. Redraw a vertical line.", true, 0);
-  tutorials.push(tutorial);
-
-  // Drawing arc with three connecting lines [inclined, straight and declined]
-  // Arc - Inclined line
-  tutorial = new Tutorial(7, "arc_line_1", "1", "45", "dr",
-    "Move inclined, 45 degrees, one unit from left down to right up",
-    "The angle was not as accepted. Redraw an inclined line.",
-    "The length was not as accepted. Redraw an inclined line.",
-    "The orientation was not as accepted. Redraw an inclined line.", false, 0);
-  tutorials.push(tutorial);
-
-  // Arc - Straight line
-  tutorial = new Tutorial(8, "arc_line_2", "1", "0", "h",
-    "Move straight one unit from start to right",
+  var con1 = new Tutorial(5, "connecting line 1", 1, "45", "h",
+    "Move straight one unit from left to right",
     "The angle was not as accepted. Redraw a horizontal line.",
     "The length was not as accepted. Redraw a horizontal line.",
-    "The orientation was not as accepted. Redraw a horizontal line.", true, 0);
-  tutorials.push(tutorial);
+    "The orientation was not as accepted. Redraw a horizontal line.", false, 0, con2);
+  tutorials.push(con1);
 
+  // Drawing arc with three connecting lines [inclined, straight and declined]
   // Arc - Declined line
-  tutorial = new Tutorial(9, "arc_line_3", "1", "45", "dl",
+  var arc3 = new Tutorial(9, "Arc line 3", 1, "45", "dl",
     "Move declined, 45 degrees, one unit from the start to right down",
     "The angle was not as accepted. Redraw a declined line.",
     "The length was not as accepted. Redraw a declined line.",
     "The orientation was not as accepted. Redraw a declined line.", true, 0);
-  tutorials.push(tutorial);
-
-  //triangle
-  tutorial = new Tutorial(10, "Triangle line 1", "1", "45", "dl",
-    "Move inclined, 45 degrees, one unit from right down to left up",
+  // Arc - Straight line
+  var arc2 = new Tutorial(8, "Arc line 2", 1, "0", "h",
+    "Move straight one unit from start to right",
+    "The angle was not as accepted. Redraw a horizontal line.",
+    "The length was not as accepted. Redraw a horizontal line.",
+    "The orientation was not as accepted. Redraw a horizontal line.", true, 0, arc3);
+  // Arc - Inclined line
+  var arc1 = new Tutorial(7, "Arc line 1", 1, "45", "dr",
+    "Move inclined, 45 degrees, one unit from left down to right up",
     "The angle was not as accepted. Redraw an inclined line.",
     "The length was not as accepted. Redraw an inclined line.",
-    "The orientation was not as accepted. Redraw an inclined line.", false, 0);
-  tutorials.push(tutorial);
+    "The orientation was not as accepted. Redraw an inclined line.", false, 0, arc2);
+  tutorials.push(arc1);
 
-  tutorial = new Tutorial(11, "Triangle line 2", "1", "45", "dr",
+  //triangle
+  var tri3 = new Tutorial(12, "Triangle line 3", 1, "45", "h",
+    "Move straight one unit from left to right",
+    "The angle was not as accepted. Redraw a horizontal line.",
+    "The length was not as accepted. Redraw a horizontal line.",
+    "The orientation was not as accepted. Redraw a horizontal line.", true, 0);
+  var tri2 = new Tutorial(11, "Triangle line 2", 1, "45", "dr",
     "Move inclined, 45 degrees, one unit from right up to left down",
     "The angle was not as accepted. Redraw an inclined line from the connecting point.",
     "The length was not as accepted. Redraw an inclined line from the connecting point.",
-    "The orientation was not as accepted. Redraw an inclined line.", true, 0);
-  tutorials.push(tutorial);
-
-  tutorial = new Tutorial(12, "Triangle line 3", "1", "45", "h",
-    "Move straight one unit from left to right",
-    "The angle was not as accepted. Redraw a horizontal line.",
-    "The length was not as accepted. Redraw a horizontal line.",
-    "The orientation was not as accepted. Redraw a horizontal line.", true, 0);
-  tutorials.push(tutorial);
+    "The orientation was not as accepted. Redraw an inclined line.", true, 0, tri3);
+  var tri1 = new Tutorial(10, "Triangle line 1", 1, "45", "dl",
+    "Move inclined, 45 degrees, one unit from right down to left up",
+    "The angle was not as accepted. Redraw an inclined line.",
+    "The length was not as accepted. Redraw an inclined line.",
+    "The orientation was not as accepted. Redraw an inclined line.", false, 0, tri2);
+  tutorials.push(tri1);
 
   //square
-  tutorial = new Tutorial(13, "Square line 1", "1", "0", "h",
-    "Move straight one unit from left to right",
-    "The angle was not as accepted. Redraw a horizontal line.",
-    "The length was not as accepted. Redraw a horizontal line.",
-    "The orientation was not as accepted. Redraw a horizontal line.", false, 0);
-  tutorials.push(tutorial);
-
-  tutorial = new Tutorial(14, "Square line 2", "1", "90", "v",
-    "Move straight one unit from up to down",
-    "The angle was not as accepted. Redraw a vertical line from the connecting point.",
-    "The length was not as accepted. Redraw a vertical line from the connecting point.",
-    "The orientation was not as accepted. Redraw a vertical line.", true, 0);
-  tutorials.push(tutorial);
-
-  tutorial = new Tutorial(15, "Square line 3", "1", "0", "h",
-    "Move straight one unit from right to left",
-    "The angle was not as accepted. Redraw a horizontal line from the connecting point.",
-    "The length was not as accepted. Redraw a horizontal line from the connecting point.",
-    "The orientation was not as accepted. Redraw a horizontal line.", true, 0);
-  tutorials.push(tutorial);
-
-  // Vertical line
-  tutorial = new Tutorial(16, "Square line 4", "1", "90", "v",
+  var sq4 = new Tutorial(16, "Square line 4", 1, "90", "v",
     "Move straight one unit from down to up",
     "The angle was not as accepted. Redraw a vertical line from the connecting point.",
     "The length was not as accepted. Redraw a vertical line from the connecting point.",
     "The orientation was not as accepted. Redraw a vertical line.", true, 0);
-  tutorials.push(tutorial);
+  var sq3 = new Tutorial(15, "Square line 3", 1, "0", "h",
+    "Move straight one unit from right to left",
+    "The angle was not as accepted. Redraw a horizontal line from the connecting point.",
+    "The length was not as accepted. Redraw a horizontal line from the connecting point.",
+    "The orientation was not as accepted. Redraw a horizontal line.", true, 0, sq4);
+  var sq2 = new Tutorial(14, "Square line 2", 1, "90", "v",
+    "Move straight one unit from up to down",
+    "The angle was not as accepted. Redraw a vertical line from the connecting point.",
+    "The length was not as accepted. Redraw a vertical line from the connecting point.",
+    "The orientation was not as accepted. Redraw a vertical line.", true, 0, sq3);
+  var sq1 = new Tutorial(13, "Square line 1", 1, "0", "h",
+    "Move straight one unit from left to right",
+    "The angle was not as accepted. Redraw a horizontal line.",
+    "The length was not as accepted. Redraw a horizontal line.",
+    "The orientation was not as accepted. Redraw a horizontal line.", false, 0, sq2);
+  tutorials.push(sq1);
 
   return tutorials;
 }
@@ -263,17 +246,18 @@ function checkOrientation(stack) {
 }
 
 function acceptableLength(length) {
-  if (length == unit) {
+  var xunit = currentTutorial.length * unit;
+  if (length == xunit) {
     return true;
   }
   var diff = 0
-  if (length > unit) {
-    diff = length - unit;
+  if (length > xunit) {
+    diff = length - xunit;
   }
   else {
-    diff = unit - length;
+    diff = xunit - length;
   }
-  var range = 20 / 100 * unit;
+  var range = 20 / 100 * xunit;
   if (diff > range) {
     return false;
   }
@@ -309,16 +293,16 @@ function checkForTutorialScore(stack) {
   }
 
   if (currentTutorial.score == 1) {
-    if (tutorials.length > currentTutorialIndex + 1) {
-      currentTutorial = tutorials[++currentTutorialIndex];
+    if (currentTutorial.nextTutorial) {
+      currentTutorial = currentTutorial.nextTutorial;
       lastKnownCoord = { x: stack[stack.length - 1].x, y: stack[stack.length - 1].y };
-      setInstruction('Success! Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
+      setInstruction('Success! Tutorial ' + currentTutorial.id + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
     }
     else {
       setInstruction('Success!');
 
       // Smoothen if it's an arc
-      if (currentTutorial.name == 'arc_line_3') {
+      if (currentTutorial.name == 'Arc line 3') {
         smoothenArc();
       }
 
@@ -326,7 +310,7 @@ function checkForTutorialScore(stack) {
     }
   }
   else {
-    setInstruction('Again Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
+    setInstruction('Again Tutorial ' + currentTutorial.id + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
   }
 }
 
@@ -351,26 +335,27 @@ function checkIfCoordInRange(mouseX, mouseY, lastPoint) {
   }
   else {
     if ((mouseX - lastPoint.x) > 10) {
-      setInstruction('Move Left');
+      setInstruction('Move Left for the connecting point');
       return false;
     }
     else if ((lastPoint.x - mouseX) > 10) {
-      setInstruction('Move Right');
+      setInstruction('Move Right for the connecting point');
       return false;
     }
     if ((mouseY - lastPoint.y) > 10) {
-      setInstruction('Move Up');
+      setInstruction('Move Up for the connecting point');
       return false;
     }
     else if ((lastPoint.y - mouseY) > 10) {
-      setInstruction('Move Down');
+      setInstruction('Move Down for the connecting point');
       return false;
     }
   }
 }
 
 function checkForLineLength(stack) {
-  if (tutorialModeCheck() && stack.length === unit) {
+  var xunit = currentTutorial.length * unit;
+  if (tutorialModeCheck() && stack.length === xunit) {
     setInstruction('stop');
   }
 }
@@ -388,7 +373,7 @@ function checkForContinuePointMode(mouseX, mouseY) {
 
 class Tutorial {
   constructor(id, name, length, angle, orientation, draw_instructions, angle_error_instructions,
-    length_error_instructions, orientation_error_instructions, continueFromLast, score) {
+    length_error_instructions, orientation_error_instructions, continueFromLast, score, nextTutorial) {
     this.id = id;
     this.name = name;
     this.length = length;
@@ -400,5 +385,6 @@ class Tutorial {
     this.orientation_error_instructions = orientation_error_instructions;
     this.continueFromLast = continueFromLast;
     this.score = score;
+    this.nextTutorial = nextTutorial;
   }
 }
