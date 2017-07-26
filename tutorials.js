@@ -30,6 +30,7 @@ function resetCounters() {
   currentTutorialIndex = 0;
   currentTutorial = null;
   lastKnownCoord = { x: -1, y: -1 };
+  clearCanvas(canvas, ctx);
 }
 
 // Reset the tutorials
@@ -41,7 +42,7 @@ function resetTutorials() {
 function initializeTutorials() {
   // Horizontal line
   var tutorial = new Tutorial("horizontal line", "1", "0", "h",
-    "Move straight one unit from left to right on start",
+    "Move straight one unit from left to right",
     "The angle was not as accepted. Redraw a horizontal line.",
     "The length was not as accepted. Redraw a horizontal line.",
     "The orientation was not as accepted. Redraw a horizontal line.", false, 0);
@@ -49,7 +50,7 @@ function initializeTutorials() {
 
   // Vertical line
   tutorial = new Tutorial("vertical line", "1", "90", "v",
-    "Move straight one unit from up to down on start",
+    "Move straight one unit from up to down",
     "The angle was not as accepted. Redraw a vertical line.",
     "The length was not as accepted. Redraw a vertical line.",
     "The orientation was not as accepted. Redraw a vertical line.", false, 0);
@@ -57,7 +58,7 @@ function initializeTutorials() {
 
   // Left to right inclined line
   tutorial = new Tutorial("inclined line", "1", "45", "dr",
-    "Move inclined, 45 degrees, one unit from left down to right up on start",
+    "Move inclined, 45 degrees, one unit from left down to right up",
     "The angle was not as accepted. Redraw an inclined line.",
     "The length was not as accepted. Redraw an inclined line.",
     "The orientation was not as accepted. Redraw an inclined line.", false, 0);
@@ -65,22 +66,22 @@ function initializeTutorials() {
 
   // Right to left inclined line
   tutorial = new Tutorial("inclined line", "1", "45", "dl",
-    "Move inclined, 45 degrees, one unit from right down to left up on start",
+    "Move inclined, 45 degrees, one unit from right down to left up",
     "The angle was not as accepted. Redraw an inclined line.",
     "The length was not as accepted. Redraw an inclined line.",
-    "The orientation was not as accepted. Redraw an inclined line.", 0);
+    "The orientation was not as accepted. Redraw an inclined line.", false, 0);
   tutorials.push(tutorial);
 
   // Connecting Points
   tutorial = new Tutorial("horizontal line", "1", "45", "h",
-    "Move straight one unit from left to right on start",
+    "Move straight one unit from left to right",
     "The angle was not as accepted. Redraw a horizontal line.",
     "The length was not as accepted. Redraw a horizontal line.",
     "The orientation was not as accepted. Redraw a horizontal line.", false, 0);
   tutorials.push(tutorial);
 
   tutorial = new Tutorial("connecting vertical line", "1", "90", "v",
-    "Move straight one unit from up to down on start from the connecting point",
+    "Move straight one unit from up to down from the connecting point",
     "The angle was not as accepted. Redraw a vertical line from the connecting point.",
     "The length was not as accepted. Redraw a vertical line from the connecting point.",
     "The orientation was not as accepted. Redraw a vertical line.", true, 0);
@@ -117,7 +118,7 @@ function getSlope(stack, retAbs = false) {
 
 function checkOrientation(stack) {
   if (currentTutorial.orientation == "h") {
-    if ((stack[stack.length - 1].x - stack[0].x) > (stack[stack.length - 1].y - stack[0].y)) {
+    if (Math.abs(stack[stack.length - 1].x - stack[0].x) > Math.abs(stack[stack.length - 1].y - stack[0].y)) {
       return true;
     }
     else {
@@ -125,7 +126,7 @@ function checkOrientation(stack) {
     }
   }
   else if (currentTutorial.orientation == "v") {
-    if ((stack[stack.length - 1].x - stack[0].x) < (stack[stack.length - 1].y - stack[0].y)) {
+    if (Math.abs(stack[stack.length - 1].x - stack[0].x) < Math.abs(stack[stack.length - 1].y - stack[0].y)) {
       return true;
     }
     else {
@@ -240,7 +241,7 @@ function checkForTutorialScore(stack) {
   else {
     setInstruction('Again Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
   }
-
+  clearCanvas(canvas, ctx, false);
 }
 
 function checkIfCoordInRange(mouseX, mouseY, lastPoint) {
@@ -283,7 +284,7 @@ function checkIfCoordInRange(mouseX, mouseY, lastPoint) {
 }
 
 function checkForLineLength(stack) {
-  if (tutorialModeCheck() && stack.length >= unit) {
+  if (tutorialModeCheck() && stack.length === unit) {
     setInstruction('stop');
   }
 }
