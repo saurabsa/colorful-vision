@@ -63,6 +63,15 @@ function initializeTutorials() {
     "The orientation was not as accepted. Redraw an inclined line.", false, 0);
   tutorials.push(tutorial);
 
+  // Right to left inclined line
+  tutorial = new Tutorial("inclined line", "1", "45", "dl",
+    "Move inclined, 45 degrees, one unit from right down to left up on start",
+    "The angle was not as accepted. Redraw an inclined line.",
+    "The length was not as accepted. Redraw an inclined line.",
+    "The orientation was not as accepted. Redraw an inclined line.", 0);
+  tutorials.push(tutorial);
+
+  // Connecting Points
   tutorial = new Tutorial("horizontal line", "1", "45", "h",
     "Move straight one unit from left to right on start",
     "The angle was not as accepted. Redraw a horizontal line.",
@@ -75,14 +84,6 @@ function initializeTutorials() {
     "The angle was not as accepted. Redraw a vertical line from the connecting point.",
     "The length was not as accepted. Redraw a vertical line from the connecting point.",
     "The orientation was not as accepted. Redraw a vertical line.", true, 0);
-  tutorials.push(tutorial);
-
-  // Right to left inclined line
-  tutorial = new Tutorial("inclined line", "1", "45", "dl",
-    "Move inclined, 45 degrees, one unit from right down to left up on start",
-    "The angle was not as accepted. Redraw an inclined line.",
-    "The length was not as accepted. Redraw an inclined line.",
-    "The orientation was not as accepted. Redraw an inclined line.", 0);
   tutorials.push(tutorial);
 }
 
