@@ -1,6 +1,7 @@
 var tutorialMode = false;
 var currentTutorial;
 var currentTutorialIndex = 0;
+var lastKnownCoord;
 var tutorials = [];
 var unit = 150;
 
@@ -28,6 +29,7 @@ function resetCounters() {
   tutorials = [];
   currentTutorialIndex = 0;
   currentTutorial = null;
+  lastKnownCoord = { x: -1, y: -1 };
 }
 
 // Reset the tutorials
@@ -37,25 +39,39 @@ function resetTutorials() {
 }
 
 function initializeTutorials() {
-  var tutorial = new Tutorial("horizontal line", "1", "0", "h",
+  /*var tutorial = new Tutorial("horizontal line", "1", "0", "h",
     "Move straight one unit from left to right on start",
     "The angle was not as accepted. Redraw a horizontal line.",
     "The length was not as accepted. Redraw a horizontal line.",
-    "The orientation was not as accepted. Redraw a horizontal line.", 0);
+    "The orientation was not as accepted. Redraw a horizontal line.", false, 0);
   tutorials.push(tutorial);
 
   tutorial = new Tutorial("vertical line", "1", "90", "v",
     "Move straight one unit from up to down on start",
     "The angle was not as accepted. Redraw a vertical line.",
     "The length was not as accepted. Redraw a vertical line.",
-    "The orientation was not as accepted. Redraw a vertical line.", 0);
+    "The orientation was not as accepted. Redraw a vertical line.", false, 0);
   tutorials.push(tutorial);
 
   tutorial = new Tutorial("inclined line", "1", "45", "d",
     "Move inclined, 45 degrees, one unit from left down to right up on start",
     "The angle was not as accepted. Redraw an inclined line.",
     "The length was not as accepted. Redraw an inclined line.",
-    "The orientation was not as accepted. Redraw an inclined line.", 0);
+    "The orientation was not as accepted. Redraw an inclined line.", false, 0);
+  tutorials.push(tutorial);*/
+
+  tutorial = new Tutorial("horizontal line", "1", "45", "h",
+    "Move straight one unit from left to right on start",
+    "The angle was not as accepted. Redraw a horizontal line.",
+    "The length was not as accepted. Redraw a horizontal line.",
+    "The orientation was not as accepted. Redraw a horizontal line.", false, 0);
+  tutorials.push(tutorial);
+
+  tutorial = new Tutorial("connecting vertical line", "1", "90", "v",
+    "Move straight one unit from up to down on start from the connecting point",
+    "The angle was not as accepted. Redraw a vertical line from the connecting point.",
+    "The length was not as accepted. Redraw a vertical line from the connecting point.",
+    "The orientation was not as accepted. Redraw a vertical line.", true, 0);
   tutorials.push(tutorial);
 }
 
@@ -149,8 +165,9 @@ function checkForTutorialScore(stack) {
   }
 
   if (!acceptableLength(stack.length)) {
-    setInstruction(currentTutorial.length_error_instructions);
+    setInstruction(currentTutorial.length_error_instructions + ' Clearing last line');
     currentTutorial.score = 0;
+    undo(canvas, ctx);
     return;
   }
   else {
@@ -158,8 +175,9 @@ function checkForTutorialScore(stack) {
   }
 
   if (!checkOrientation(stack)) {
-    appendInstruction(currentTutorial.orientation_error_instructions);
+    setInstruction(currentTutorial.orientation_error_instructions + ' Clearing last line');
     currentTutorial.score = 0;
+    undo(canvas, ctx);
     return;
   }
   else {
@@ -169,6 +187,7 @@ function checkForTutorialScore(stack) {
   if (currentTutorial.score == 1) {
     if (tutorials.length > currentTutorialIndex + 1) {
       currentTutorial = tutorials[++currentTutorialIndex];
+      lastKnownCoord = { x: stack[stack.length - 1].x, y: stack[stack.length - 1].y };
       setInstruction('Success! Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
     }
     else {
@@ -182,14 +201,65 @@ function checkForTutorialScore(stack) {
 
 }
 
+function checkIfCoordInRange(mouseX, mouseY, lastPoint) {
+  var xdiff = 0;
+  if (mouseX > lastPoint.x) {
+    xdiff = mouseX - lastPoint.x;
+  }
+  else {
+    xdiff = lastPoint.x - mouseX;
+  }
+  var ydiff = 0;
+  if (mouseY > lastPoint.y) {
+    ydiff = mouseY - lastPoint.y;
+  }
+  else {
+    ydiff = lastPoint.y - mouseY;
+  }
+  if (xdiff <= 10 && ydiff <= 10) {
+    setInstruction('');
+    return true;
+  }
+  else {
+    if (mouseX > lastPoint.x) {
+      setInstruction('Move Left');
+      return false;
+    }
+    else {
+      setInstruction('Move Right');
+      return false;
+    }
+    if (mouseY > lastPoint.y) {
+      setInstruction('Move Up');
+      return false;
+    }
+    else {
+      setInstruction('Move Down');
+      return false;
+    }
+  }
+}
+
 function checkForLineLength(stack) {
   if (tutorialModeCheck() && stack.length >= unit) {
     setInstruction('stop');
   }
 }
 
+function checkForContinuePointMode(mouseX, mouseY) {
+  if (tutorialModeCheck() && currentTutorial.continueFromLast) {
+    drawMode = false;
+    document.getElementById("mode").innerText = "Current Mode: Placement";
+    if (checkIfCoordInRange(mouseX, mouseY, lastKnownCoord)) {
+      drawMode = true;
+      document.getElementById("mode").innerText = "Current Mode: Draw";
+    }
+  }
+}
+
 class Tutorial {
-  constructor(name, length, angle, orientation, draw_instructions, angle_error_instructions, length_error_instructions, orientation_error_instructions, score) {
+  constructor(name, length, angle, orientation, draw_instructions, angle_error_instructions,
+    length_error_instructions, orientation_error_instructions, continueFromLast, score) {
     this.name = name;
     this.length = length;
     this.angle = angle;
@@ -198,6 +268,7 @@ class Tutorial {
     this.angle_error_instructions = angle_error_instructions;
     this.length_error_instructions = length_error_instructions;
     this.orientation_error_instructions = orientation_error_instructions;
+    this.continueFromLast = continueFromLast;
     this.score = score;
   }
 }

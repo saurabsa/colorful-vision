@@ -85,7 +85,9 @@
     }
 
     // Keep track of the mouse button being pressed and draw a dot at current location
-    function sketchpad_mouseDown() {
+    function sketchpad_mouseDown(e) {
+      getMousePos(e);
+      checkForContinuePointMode(mouseX, mouseY);
       if (!drawMode) return;
       mouseDown = 1;
       stack = [];
@@ -106,7 +108,8 @@
     }
 
     // Keep track of the mouse button being released
-    function sketchpad_mouseUp() {
+    function sketchpad_mouseUp(e) {
+      getMousePos(e);
       if (!drawMode) return;
       if (mouseDown != 0) {
         for (const point of stack) {
@@ -119,11 +122,14 @@
           checkForTutorialScore(stack);
         }
       }
-
     }
 
     // Keep track of the mouse position and draw a dot if mouse button is currently pressed
     function sketchpad_mouseMove(e) {
+      if (!drawMode && mouseDown != 0 && tutorialModeCheck() && currentTutorial.continueFromLast
+        && lastKnownCoord.x > -1 && lastKnownCoord.y > -1) {
+        checkIfCoordInRange(mouseX, mouseY, lastKnownCoord);
+      }
       if (!drawMode) return;
       // Update the mouse co-ordinates when moved
       getMousePos(e);
