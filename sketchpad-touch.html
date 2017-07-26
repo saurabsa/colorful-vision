@@ -260,6 +260,34 @@
       canvas.width = window.innerWidth * 0.75;
       canvas.height = window.innerHeight;
     }
+
+    function smoothenArc() {
+      line1Stack = arrayOfStack[arrayOfStack.length - 3];
+      line2Stack = arrayOfStack[arrayOfStack.length - 2];
+      line3Stack = arrayOfStack[arrayOfStack.length - 1];
+
+      // Call Undo Thrice and redraw the arc
+      undo(canvas, ctx);
+      undo(canvas, ctx);
+      undo(canvas, ctx);
+
+      // Re draw smoothened curve
+      ctx.beginPath();
+      ctx.strokeStyle = '#000000';
+
+      ctx.moveTo(line1Stack[0].x, line1Stack[0].y);
+
+      line2StackMidPoint = Math.ceil(line2Stack.length / 2);
+      MidX = 2 * line2Stack[line2StackMidPoint].x - line1Stack[0].x / 2 - line3Stack[line3Stack.length - 1].x / 2;
+      MidY = 2 * line2Stack[line2StackMidPoint].y - line1Stack[0].y / 2 - line3Stack[line3Stack.length - 1].y / 2;
+
+      ctx.quadraticCurveTo(MidX, MidY, line3Stack[line3Stack.length - 1].x, line3Stack[line3Stack.length - 1].y);
+
+      ctx.lineWidth = MOUSE_SIZE;
+      ctx.stroke();
+
+      // setInstruction("Arc Smoothened");
+    }
   </script>
 
   <style>

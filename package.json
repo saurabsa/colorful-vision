@@ -8,8 +8,7 @@
   },
   "description": "A colorful vision",
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "electron": "~1.6.2"
   },
