@@ -30,7 +30,6 @@ function resetCounters() {
   currentTutorialIndex = 0;
   currentTutorial = null;
   lastKnownCoord = { x: -1, y: -1 };
-  clearCanvas(canvas, ctx);
 }
 
 // Reset the tutorials
@@ -86,6 +85,29 @@ function initializeTutorials() {
     "The length was not as accepted. Redraw a vertical line from the connecting point.",
     "The orientation was not as accepted. Redraw a vertical line.", true, 0);
   tutorials.push(tutorial);
+
+  //triangle
+  tutorial = new Tutorial("Triangle line 1", "1", "45", "dl",
+    "Move inclined, 45 degrees, one unit from right down to left up",
+    "The angle was not as accepted. Redraw an inclined line.",
+    "The length was not as accepted. Redraw an inclined line.",
+    "The orientation was not as accepted. Redraw an inclined line.", false, 0);
+  tutorials.push(tutorial);
+
+  tutorial = new Tutorial("Triangle line 2", "1", "45", "dr",
+    "Move inclined, 45 degrees, one unit from right up to left down",
+    "The angle was not as accepted. Redraw an inclined line.",
+    "The length was not as accepted. Redraw an inclined line.",
+    "The orientation was not as accepted. Redraw an inclined line.", true, 0);
+  tutorials.push(tutorial);
+
+  tutorial = new Tutorial("Triangle line 3", "1", "45", "h",
+    "Move straight one unit from left to right",
+    "The angle was not as accepted. Redraw a horizontal line.",
+    "The length was not as accepted. Redraw a horizontal line.",
+    "The orientation was not as accepted. Redraw a horizontal line.", true, 0);
+  tutorials.push(tutorial);
+
 }
 
 function getLastFailedTutorial() {
@@ -241,7 +263,6 @@ function checkForTutorialScore(stack) {
   else {
     setInstruction('Again Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
   }
-  clearCanvas(canvas, ctx, false);
 }
 
 function checkIfCoordInRange(mouseX, mouseY, lastPoint) {
