@@ -30,6 +30,7 @@ function resetCounters() {
   currentTutorialIndex = 0;
   currentTutorial = null;
   lastKnownCoord = { x: -1, y: -1 };
+  clearCanvas(canvas, ctx);
 }
 
 // Reset the tutorials
@@ -240,7 +241,7 @@ function checkForTutorialScore(stack) {
   else {
     setInstruction('Again Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
   }
-
+  clearCanvas(canvas, ctx);
 }
 
 function checkIfCoordInRange(mouseX, mouseY, lastPoint) {
