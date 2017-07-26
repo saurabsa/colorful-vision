@@ -37,6 +37,8 @@ function resetTutorials() {
 }
 
 function initializeTutorials() {
+
+  // Horizontal line
   var tutorial = new Tutorial("horizontal line", "1", "0", "h",
     "Move straight one unit from left to right on start",
     "The angle was not as accepted. Redraw a horizontal line.",
@@ -44,6 +46,7 @@ function initializeTutorials() {
     "The orientation was not as accepted. Redraw a horizontal line.", 0);
   tutorials.push(tutorial);
 
+  // Vertical line
   tutorial = new Tutorial("vertical line", "1", "90", "v",
     "Move straight one unit from up to down on start",
     "The angle was not as accepted. Redraw a vertical line.",
@@ -51,8 +54,17 @@ function initializeTutorials() {
     "The orientation was not as accepted. Redraw a vertical line.", 0);
   tutorials.push(tutorial);
 
-  tutorial = new Tutorial("inclined line", "1", "45", "d",
+  // Left to right inclined line
+  tutorial = new Tutorial("inclined line", "1", "45", "dr",
     "Move inclined, 45 degrees, one unit from left down to right up on start",
+    "The angle was not as accepted. Redraw an inclined line.",
+    "The length was not as accepted. Redraw an inclined line.",
+    "The orientation was not as accepted. Redraw an inclined line.", 0);
+  tutorials.push(tutorial);
+
+  // Right to left inclined line
+  tutorial = new Tutorial("inclined line", "1", "45", "dl",
+    "Move inclined, 45 degrees, one unit from right down to left up on start",
     "The angle was not as accepted. Redraw an inclined line.",
     "The length was not as accepted. Redraw an inclined line.",
     "The orientation was not as accepted. Redraw an inclined line.", 0);
@@ -104,9 +116,16 @@ function checkOrientation(stack) {
       return false;
     }
   }
-  else if (currentTutorial.orientation == "d") {
+  else if (currentTutorial.orientation == "dl") {
     // Returns the absolute slope
-    slope = getSlope(stack, true);
+    slope = getSlope(stack);
+
+    if (slope < 0) {
+      // If negative slope, then wrong direction
+      setInstruction("Line should be drawn from right down to left up. ");
+      return false;
+    }
+
     if (slope >= 0.75 && slope <= 1.25) {
       return true;
     }
@@ -116,6 +135,29 @@ function checkOrientation(stack) {
       }
       else {
         setInstruction("Line too high. Decrease the angle of inclination. ");
+      }
+      return false;
+    }
+  }
+  else if (currentTutorial.orientation == "dr") {
+    // Returns the absolute slope
+    slope = getSlope(stack);
+
+    if (slope > 0) {
+      // If positive slope, then wrong direction
+      setInstruction("Line should be drawn from left down to right up. ");
+      return false;
+    }
+
+    if (slope >= -1.25 && slope <= -0.75) {
+      return true;
+    }
+    else {
+      if (slope < -1.25) {
+        setInstruction("Line too high. Increase the angle of inclination. ");
+      }
+      else {
+        setInstruction("Line too low. Decrease the angle of inclination. ");
       }
       return false;
     }
