@@ -9,7 +9,6 @@
   "description": "A colorful vision",
   "license": "MIT",
   "dependencies": {
-    "pretty-bytes": "^2.0.1"
   },
   "devDependencies": {
     "electron": "~1.6.2"
