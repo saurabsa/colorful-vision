@@ -68,7 +68,7 @@ function initializeTutorials() {
     "Move inclined, 45 degrees, one unit from right down to left up",
     "The angle was not as accepted. Redraw an inclined line.",
     "The length was not as accepted. Redraw an inclined line.",
-    "The orientation was not as accepted. Redraw an inclined line.", 0);
+    "The orientation was not as accepted. Redraw an inclined line.", false, 0);
   tutorials.push(tutorial);
 
   // Connecting Points
@@ -283,7 +283,7 @@ function checkIfCoordInRange(mouseX, mouseY, lastPoint) {
 }
 
 function checkForLineLength(stack) {
-  if (tutorialModeCheck() && stack.length >= unit) {
+  if (tutorialModeCheck() && stack.length === unit) {
     setInstruction('stop');
   }
 }
