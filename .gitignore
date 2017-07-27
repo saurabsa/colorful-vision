@@ -58,4 +58,5 @@ typings/
 .env
 
 data/accessToken/*
+.DS_Store
 

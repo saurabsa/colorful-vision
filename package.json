@@ -10,7 +10,14 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "electron": "~1.6.2"
+    "electron": "~1.6.2",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "glob": "^7.1.2",
+    "jade": "~1.11.0",
+    "multer": "^1.3.0",
+    "request": "^2.79.0",
+    "sanitize-filename": "^1.6.1"
   },
   "homepage": "https://github.com/vishrutshah/colorful-vision",
   "repository": {
