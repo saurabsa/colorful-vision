@@ -35,9 +35,9 @@ function doTutorial(canvas, ctx, index) {
     initializeTutorials();
   }
   else {
-    if (tutorials.length > index) {
+    if (tutorials.length >= index) {
       // Retrieve the most recently failed tutorial
-      currentTutorialIndex = index;
+      currentTutorialIndex = index - 1;
       if (currentTutorialIndex == -1) {
         setInstruction("All the tutorials are passed. Yayy!");
       }

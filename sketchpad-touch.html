@@ -293,6 +293,10 @@
       // setInstruction("Arc Smoothened");
     }
 
+    function executeTutorial(id) {
+      doTutorial(canvas, ctx, id);
+    }
+
     function addRadioButtons() {
       if (!tutorials || tutorials.length === 0) {
         initializeTutorials();
@@ -303,7 +307,7 @@
 
       for (var i = 0; i < tutorials.length; i++) {
         let tutorial = tutorials[i];
-        innerHTML = innerHTML.concat(`<input id="tutorial${tutorial.id}" type="radio" name="tutorial" value="${tutorial.id}"> ${tutorial.name} </input><br>`);
+        innerHTML = innerHTML.concat(`<input id="tutorial${tutorial.id}" type="radio" name="tutorial" value="${tutorial.id}" onclick="executeTutorial(${tutorial.id})"> ${tutorial.name} </input><br>`);
       }
       tutorialsDiv.innerHTML = `${innerHTML}`;
     }
