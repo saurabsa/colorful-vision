@@ -47,7 +47,8 @@ function doTutorial(canvas, ctx, index) {
   }
   currentTutorial = tutorials[currentTutorialIndex];
   setInstruction(`Tutorial ${currentTutorial.name}.`);
-  setInstruction(`${currentTutorial.draw_instructions}`);
+  //setInstruction(`${currentTutorial.draw_instructions}`);
+  setTimeout(setInstruction, 2000, `${currentTutorial.draw_instructions}`);
 }
 
 function resetCounters() {
@@ -331,7 +332,8 @@ function checkForTutorialScore(stack) {
 
   if (!acceptableLength(stack.length)) {
     setInstruction(`${currentTutorial.length_error_instructions}`);
-    setInstruction(`Clearing the last line.`);
+    //setInstruction(`Clearing the last line.`);
+    setTimeout(setInstruction, 4000, `Clearing the last line.`);
     currentTutorial.score = 0;
     undo(canvas, ctx);
     return;
@@ -342,7 +344,8 @@ function checkForTutorialScore(stack) {
 
   if (!checkOrientation(stack)) {
     setInstruction(`${currentTutorial.orientation_error_instructions}`);
-    setInstruction(`Clearing the last line.`);
+    //setInstruction(`Clearing the last line.`);
+    setTimeout(setInstruction, 4000, `Clearing the last line.`);
     currentTutorial.score = 0;
     undo(canvas, ctx);
     return;
@@ -356,7 +359,8 @@ function checkForTutorialScore(stack) {
       currentTutorial = currentTutorial.nextTutorial;
       lastKnownCoord = { x: stack[stack.length - 1].x, y: stack[stack.length - 1].y };
       setInstruction(`Success with Tutorial ${currentTutorial.name}.`);
-      setInstruction(`${currentTutorial.draw_instructions}.`);
+      //setInstruction(`${currentTutorial.draw_instructions}.`);
+      setTimeout(setInstruction, 2000, `${currentTutorial.draw_instructions}.`);
     }
     else {
       setInstruction('Success.');
@@ -371,7 +375,8 @@ function checkForTutorialScore(stack) {
   }
   else {
     setInstruction(`Repeating, Tutorial ${currentTutorial.name}`);
-    setInstruction(`${currentTutorial.draw_instructions}`);
+    //setInstruction(`${currentTutorial.draw_instructions}`);
+    setTimeout(setInstruction, 2000, `${currentTutorial.draw_instructions}.`);
   }
 }
 
