@@ -333,7 +333,7 @@ function checkForTutorialScore(stack) {
   if (!acceptableLength(stack.length)) {
     setInstruction(`${currentTutorial.length_error_instructions}`);
     //setInstruction(`Clearing the last line.`);
-    setTimeout(setInstruction, 4000, `Clearing the last line.`);
+    //setTimeout(setInstruction, 4000, `Clearing the last line.`);
     currentTutorial.score = 0;
     undo(canvas, ctx);
     return;
@@ -345,7 +345,7 @@ function checkForTutorialScore(stack) {
   if (!checkOrientation(stack)) {
     setInstruction(`${currentTutorial.orientation_error_instructions}`);
     //setInstruction(`Clearing the last line.`);
-    setTimeout(setInstruction, 4000, `Clearing the last line.`);
+    //setTimeout(setInstruction, 4000, `Clearing the last line.`);
     currentTutorial.score = 0;
     undo(canvas, ctx);
     return;

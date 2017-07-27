@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 **/
 
 var access_token;
+var context;
 function Synthesize(text) {
 
   // Note: The way to get api key:
@@ -76,7 +77,9 @@ function getAudioFromLocal(text) {
       return res.arrayBuffer();
     }).then((buf) => {
       window.AudioContext = window.AudioContext || window.webkitAudioContext;
-      context = new AudioContext();
+      if (!context) {
+        context = new AudioContext();
+      }
       return context.decodeAudioData(buf);
     }).then((buf1) => {
       var source = context.createBufferSource();
