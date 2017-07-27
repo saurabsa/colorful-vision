@@ -77,10 +77,10 @@ function getAudioFromLocal(text) {
     }).then((buf) => {
       window.AudioContext = window.AudioContext || window.webkitAudioContext;
       context = new AudioContext();
-      source = context.createBufferSource();
       return context.decodeAudioData(buf);
-    }).then((buffer) => {
-      source.buffer = buffer;
+    }).then((buf1) => {
+      var source = context.createBufferSource();
+      source.buffer = buf1;
       source.connect(context.destination);
       source.start(context.currentTime);
     }).catch((err) => {
