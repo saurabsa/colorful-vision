@@ -215,7 +215,7 @@
         if (e.code && e.code === "Space") {
           drawMode = !drawMode;
           var modeAsString = drawMode ? "Draw" : "Placement";
-          document.getElementById("mode").innerText = "Current Mode: " + modeAsString;
+          document.getElementById("mode").innerHTML = "<b>Current Mode</b>: " + modeAsString;
         }
 
         if (e.keyCode) {
@@ -363,17 +363,19 @@
 <body>
   <div id="sketchpadapp">
     <div class="leftside">
-      Colorful Vision SketchPad.<br/><br/> Draw something by tapping or dragging.<br/><br/> Works on iOS, Android and desktop/laptop
-      touchscreens using Chrome/Firefox/Safari.<br/><br/>
+      <h3>Colorful Vision SketchPad</h3>
+      <p>
+        &nbsp;- Empowering a blind person to draw
+      </p><br/>
       <input type="submit" value="Clear Sketchpad" id="clearbutton" onclick="clearCanvas(canvas,ctx);">
       <input type="submit" value="Undo" id="clearbutton" onclick="undo(canvas,ctx);"><br/><br/>
-      <label for="mode" id="mode">Current Mode: Draw</label><br/><br/>
+      <label for="mode" id="mode"><b>Current Mode</b>: Draw</label><br/><br/>
       <!-- <input type="submit" value="Start Tutorial" id="clearbutton" onclick="startTutorial(canvas,ctx);">
-      <input type="submit" value="Reset Tutorials" id="clearbutton" onclick="resetTutorials();"> -->
-      <input type="submit" value="Do Tutorial" id="clearbutton" onclick="doTutorial(canvas,ctx,6);">
-      <p>Instructions: <var id="instructionVar"></var></p>
+      <input type="submit" value="Reset Tutorials" id="clearbutton" onclick="resetTutorials();"> 
+      <input type="submit" value="Do Tutorial" id="clearbutton" onclick="doTutorial(canvas,ctx,6);"> -->
+      <p><b>Instructions</b>: <var id="instructionVar"></var></p>
       <div>
-        <label for="tutorials"> Tutorials Set </lable>
+        <label for="tutorials"> <b>Tutorials Set</b> </lable>
           <div id="tutorials"> 
 
           </div>
