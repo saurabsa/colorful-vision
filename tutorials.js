@@ -19,7 +19,7 @@ function startTutorial(canvas, ctx) {
     // Retrieve the most recently failed tutorial
     currentTutorialIndex = getLastFailedTutorial();
     if (currentTutorialIndex == -1) {
-      setInstruction("All the tutorials are passed. Yayy");
+      setInstruction("You successfully passed all the tutorials. Yayy");
     }
   }
   currentTutorial = tutorials[currentTutorialIndex];
@@ -40,14 +40,14 @@ function doTutorial(canvas, ctx, index) {
       // Retrieve the most recently failed tutorial
       currentTutorialIndex = index - 1;
       if (currentTutorialIndex == -1) {
-        setInstruction("All the tutorials are passed. Yayy");
+        setInstruction("You successfully passed all the tutorials. Yayy");
       }
     }
 
   }
   currentTutorial = tutorials[currentTutorialIndex];
   setInstruction(`Tutorial ${currentTutorial.name}.`);
-  setInstrction(`${currentTutorial.draw_instructions}`);
+  setInstruction(`${currentTutorial.draw_instructions}`);
 }
 
 function resetCounters() {

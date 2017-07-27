@@ -8,17 +8,13 @@ THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 **/
 
 var access_token;
-var fs = require('fs');
-var fPF = require('fetch-ponyfill')();
-var Tutorials = require('./tutorials');
-
 function Synthesize(text) {
 
   // Note: The way to get api key:
   // Free: https://www.microsoft.com/cognitive-services/en-us/subscriptions?productId=/products/Bing.Speech.Preview
   // Paid: https://portal.azure.com/#create/Microsoft.CognitiveServices/apitype/Bing.Speech/pricingtier/S0
   var post_speaker_data = `<?xml version="1.0"?><speak version="1.0" xml:lang="en-us"><voice xml:lang="en-us" xml:gender="Female" name="Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)">${text}</voice></speak>`;
-  return getAccessToken().then((access_token) => {
+  getAccessToken().then((access_token) => {
     const req = {
       method: "POST",
       body: post_speaker_data,
@@ -31,18 +27,18 @@ function Synthesize(text) {
         'X-Search-ClientID': '1ECFAE91408841A480F00935DC390960',
       }
     };
-    return fPF.fetch('https://speech.platform.bing.com/synthesize', req);
+    return fetch('https://speech.platform.bing.com/synthesize', req);
   }).then((res) => {
     return res.arrayBuffer();
-    // }).then((buf) => {
-    //   window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    //   context = new AudioContext();
-    //   source = context.createBufferSource();
-    //   return context.decodeAudioData(buf);
-    // }).then((buffer) => {
-    //   source.buffer = buffer;
-    //   source.connect(context.destination);
-    //   source.start(context.currentTime);
+  }).then((buf) => {
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    var context = new AudioContext();
+    var source = context.createBufferSource();
+    return context.decodeAudioData(buf);
+  }).then((buf1) => {
+    source.buffer = buf1;
+    source.connect(context.destination);
+    source.start(context.currentTime);
   }).catch((err) => {
     console.dir(err, { depth: null });
   });
@@ -57,7 +53,7 @@ function getAccessToken() {
     }
   };
   if (!access_token) {
-    return fPF.fetch('https://api.cognitive.microsoft.com/sts/v1.0/issueToken', reqOptions).then((res) => {
+    return fetch('https://api.cognitive.microsoft.com/sts/v1.0/issueToken', reqOptions).then((res) => {
       return res.text();
     }).then((token) => {
       access_token = token;
@@ -67,28 +63,30 @@ function getAccessToken() {
   }
 }
 
-function ab2str(buf) {
-  return String.fromCharCode.apply(null, new Uint16Array(buf));
-}
-
-function str2ab(str) {
-  var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
-  var bufView = new Uint16Array(buf);
-  for (var i = 0, strLen = str.length; i < strLen; i++) {
-    bufView[i] = str.charCodeAt(i);
+function getAudioFromLocal(text) {
+  if (text) {
+    return fetch('http://localhost:1337/getAudio', {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify({ "text": text }),
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then((res) => {
+      return res.arrayBuffer();
+    }).then((buf) => {
+      window.AudioContext = window.AudioContext || window.webkitAudioContext;
+      context = new AudioContext();
+      source = context.createBufferSource();
+      return context.decodeAudioData(buf);
+    }).then((buffer) => {
+      source.buffer = buffer;
+      source.connect(context.destination);
+      source.start(context.currentTime);
+    }).catch((err) => {
+      console.dir(err, { depth: null });
+    });
+  } else {
+    return Promise.resolve();
   }
-  return buf;
 }
-
-var tuts = Tutorials.initializeTutorials();
-
-//console.dir(tuts, { depth: null, colors: true });
-var tut = tuts[0];
-//tuts.forEach((tut) => {
-Synthesize(tut.name).then((buf) => {
-  fs.writeFileSync('foo.txt', buf);
-});
-//});
-
-
-

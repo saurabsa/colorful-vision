@@ -4,7 +4,7 @@
   <title>Coloful Vision Sketchpad</title>
 
   <script src="tutorials.js"></script>
-  <script src="ttsBrowser.js"></script>
+  <script src="ttsLocal.js"></script>
   <script type="text/javascript">
     // Stack of last objects
     var stack = [];
@@ -103,7 +103,7 @@
       var x = document.getElementById("instructionVar");
       x.innerText = instruction;
       if (instruction != '') {
-        Synthesize(instruction);
+        getAudioFromLocal(instruction);
       }
     }
 
