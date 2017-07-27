@@ -113,94 +113,94 @@ function initializeTutorials() {
 
   // Drawing arc with three connecting lines [inclined, straight and declined]
   // Arc - Declined line
-  var arc3 = new Tutorial(6.2, "Arc line 3", 1, "45", "dl",
-    "Move declined, 45 degrees, one unit from the start to right down",
+  var arc3 = new Tutorial(6.2, "Arc line 3", 2, "45", "dl",
+    "Move declined, 45 degrees, 2 unit from the start to right down",
     "The angle was incorrect. Redraw a declined line from the connecting point.",
     "The length was incorrect. Redraw a declined line from the connecting point.",
     "The orientation was incorrect. Redraw a declined line.", true, 0);
   // Arc - Straight line
-  var arc2 = new Tutorial(6.1, "Arc line", 1, "0", "h",
-    "Move straight one unit from start to right",
+  var arc2 = new Tutorial(6.1, "Arc line", 2, "0", "h",
+    "Move straight 2 unit from start to right",
     "The angle was incorrect. Redraw a horizontal line from the connecting point.",
     "The length was incorrect. Redraw a horizontal line from the connecting point.",
     "The orientation was incorrect. Redraw a horizontal line.", true, 0, arc3);
   // Arc - Inclined line
-  var arc1 = new Tutorial(6, "Arc line", 1, "45", "dr",
-    "Move inclined, 45 degrees, one unit from left down to right up",
+  var arc1 = new Tutorial(6, "Arc line", 2, "45", "dr",
+    "Move inclined, 45 degrees, 2 unit from left down to right up",
     "The angle was incorrect. Redraw an inclined line.",
     "The length was incorrect. Redraw an inclined line.",
     "The orientation was incorrect. Redraw an inclined line.", false, 0, arc2);
   tutorials.push(arc1);
 
   //triangle
-  var tri3 = new Tutorial(7.2, "Triangle line", 1, "45", "h",
-    "Move straight one unit from left to right",
+  var tri3 = new Tutorial(7.2, "Triangle line", 3, "45", "h",
+    "Move straight 3 unit from left to right",
     "The angle was incorrect. Redraw a horizontal line from the connecting point.",
     "The length was incorrect. Redraw a horizontal line from the connecting point.",
     "The orientation was incorrect. Redraw a horizontal line.", true, 0);
-  var tri2 = new Tutorial(7.1, "Triangle line", 1, "45", "dr",
-    "Move inclined, 45 degrees, one unit from right up to left down",
+  var tri2 = new Tutorial(7.1, "Triangle line", 3, "45", "dr",
+    "Move inclined, 45 degrees, 3 unit from right up to left down",
     "The angle was incorrect. Redraw an inclined line from the connecting point.",
     "The length was incorrect. Redraw an inclined line from the connecting point.",
     "The orientation was incorrect. Redraw an inclined line.", true, 0, tri3);
-  var tri1 = new Tutorial(7, "Triangle line", 1, "45", "dl",
-    "Move inclined, 45 degrees, one unit from right down to left up",
+  var tri1 = new Tutorial(7, "Triangle line", 3, "45", "dl",
+    "Move inclined, 45 degrees, 3 unit from right down to left up",
     "The angle was incorrect. Redraw an inclined line.",
     "The length was incorrect. Redraw an inclined line.",
     "The orientation was incorrect. Redraw an inclined line.", false, 0, tri2);
   tutorials.push(tri1);
 
   //square
-  var sq4 = new Tutorial(8.3, "Square line", 1, "90", "v",
-    "Move straight one unit from down to up",
+  var sq4 = new Tutorial(8.3, "Square line", 3, "90", "v",
+    "Move straight 3 unit from down to up",
     "The angle was incorrect. Redraw a vertical line from the connecting point.",
     "The length was incorrect. Redraw a vertical line from the connecting point.",
     "The orientation was incorrect. Redraw a vertical line.", true, 0);
-  var sq3 = new Tutorial(8.2, "Square line", 1, "0", "h",
-    "Move straight one unit from right to left",
+  var sq3 = new Tutorial(8.2, "Square line", 3, "0", "h",
+    "Move straight 3 unit from right to left",
     "The angle was incorrect. Redraw a horizontal line from the connecting point.",
     "The length was incorrect. Redraw a horizontal line from the connecting point.",
     "The orientation was incorrect. Redraw a horizontal line.", true, 0, sq4);
-  var sq2 = new Tutorial(8.1, "Square line", 1, "90", "v",
-    "Move straight one unit from up to down",
+  var sq2 = new Tutorial(8.1, "Square line", 3, "90", "v",
+    "Move straight 3 unit from up to down",
     "The angle was incorrect. Redraw a vertical line from the connecting point.",
     "The length was incorrect. Redraw a vertical line from the connecting point.",
     "The orientation was incorrect. Redraw a vertical line.", true, 0, sq3);
-  var sq1 = new Tutorial(8, "Square line", 1, "0", "h",
-    "Move straight one unit from left to right",
+  var sq1 = new Tutorial(8, "Square line", 3, "0", "h",
+    "Move straight 3 unit from left to right",
     "The angle was incorrect. Redraw a horizontal line.",
     "The length was incorrect. Redraw a horizontal line.",
     "The orientation was incorrect. Redraw a horizontal line.", false, 0, sq2);
   tutorials.push(sq1);
 
   //hut
-  var tri2 = new Tutorial(9.5, "House line", 2, "45", "dr",
-    "Move inclined, 45 degrees, two units from right up to left down",
+  var tri2 = new Tutorial(9.5, "House line", 3, "45", "dr",
+    "Move inclined, 45 degrees, 3 units from right up to left down",
     "The angle was incorrect. Redraw an inclined line from the connecting point.",
     "The length was incorrect. Redraw an inclined line from the connecting point.",
     "The orientation was incorrect. Redraw an inclined line.", true, 0);
-  var tri1 = new Tutorial(9.4, "House line", 2, "45", "dl",
-    "Move inclined, 45 degrees, two units from right down to left up",
+  var tri1 = new Tutorial(9.4, "House line", 3, "45", "dl",
+    "Move inclined, 45 degrees, 3 units from right down to left up",
     "The angle was incorrect. Redraw an inclined line from the connecting point.",
     "The length was incorrect. Redraw an inclined line from the connecting point.",
     "The orientation was incorrect. Redraw an inclined line.", true, 0, tri2);
-  sq4 = new Tutorial(9.3, "House line", 2, "90", "v",
-    "Move straight two units from down to up",
+  sq4 = new Tutorial(9.3, "House line", 3, "90", "v",
+    "Move straight 3 units from down to up",
     "The angle was incorrect. Redraw a vertical line from the connecting point.",
     "The length was incorrect. Redraw a vertical line from the connecting point.",
     "The orientation was incorrect. Redraw a vertical line.", true, 0, tri1);
-  sq3 = new Tutorial(9.2, "House line", 2, "0", "h",
-    "Move straight two units from left to right",
+  sq3 = new Tutorial(9.2, "House line", 3, "0", "h",
+    "Move straight 3 units from left to right",
     "The angle was incorrect. Redraw the horizontal line from the connecting point.",
     "The length was incorrect. Redraw the horizontal line from the connecting point.",
     "The orientation was incorrect. Redraw a horizontal line.", true, 0, sq4);
-  sq2 = new Tutorial(9.1, "House line", 2, "90", "v",
-    "Move straight two units from up to down",
+  sq2 = new Tutorial(9.1, "House line", 3, "90", "v",
+    "Move straight 3 units from up to down",
     "The angle was incorrect. Redraw a vertical line from the connecting point.",
     "The length was incorrect. Redraw a vertical line from the connecting point.",
     "The orientation was incorrect. Redraw a vertical line.", true, 0, sq3);
-  sq1 = new Tutorial(9, "House line", 2, "0", "h",
-    "Move straight two units from right to left",
+  sq1 = new Tutorial(9, "House line", 3, "0", "h",
+    "Move straight 3 units from right to left",
     "The angle was incorrect. Redraw a horizontal line.",
     "The length was incorrect. Redraw a horizontal line.",
     "The orientation was incorrect. Redraw a horizontal line.", false, 0, sq2);
