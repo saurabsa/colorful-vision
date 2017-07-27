@@ -19,11 +19,11 @@ function startTutorial(canvas, ctx) {
     // Retrieve the most recently failed tutorial
     currentTutorialIndex = getLastFailedTutorial();
     if (currentTutorialIndex == -1) {
-      setInstruction("All the tutorials are passed. Yayy!");
+      setInstruction("All the tutorials are passed. Yayy");
     }
   }
   currentTutorial = tutorials[currentTutorialIndex];
-  setInstruction('Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
+  setInstruction(`Tutorial ${currentTutorial.name} ${currentTutorial.draw_instructions}`);
 }
 
 // start the Tutorial
@@ -39,13 +39,13 @@ function doTutorial(canvas, ctx, index) {
       // Retrieve the most recently failed tutorial
       currentTutorialIndex = index - 1;
       if (currentTutorialIndex == -1) {
-        setInstruction("All the tutorials are passed. Yayy!");
+        setInstruction("All the tutorials are passed. Yayy");
       }
     }
 
   }
   currentTutorial = tutorials[currentTutorialIndex];
-  setInstruction('Tutorial ' + (currentTutorialIndex + 1) + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
+  setInstruction(`Tutorial ${currentTutorial.name} ${currentTutorial.draw_instructions}.`);
 }
 
 function resetCounters() {
@@ -225,7 +225,7 @@ function checkOrientation(stack) {
 
     if (slope < 0) {
       // If negative slope, then wrong direction
-      setInstruction("Line should be drawn from right down to left up. ");
+      setInstruction("Line should be drawn from right down to left up.");
       return false;
     }
 
@@ -234,10 +234,10 @@ function checkOrientation(stack) {
     }
     else {
       if (slope < 0.75) {
-        setInstruction("Line too low. Increase the angle of inclination. ");
+        setInstruction("Line too low. Increase the angle of inclination.");
       }
       else {
-        setInstruction("Line too high. Decrease the angle of inclination. ");
+        setInstruction("Line too high. Decrease the angle of inclination.");
       }
       return false;
     }
@@ -248,7 +248,7 @@ function checkOrientation(stack) {
 
     if (slope > 0) {
       // If positive slope, then wrong direction
-      setInstruction("Line should be drawn from left down to right up. ");
+      setInstruction("Line should be drawn from left down to right up.");
       return false;
     }
 
@@ -257,10 +257,10 @@ function checkOrientation(stack) {
     }
     else {
       if (slope < -1.25) {
-        setInstruction("Line too high. Increase the angle of inclination. ");
+        setInstruction("Line too high. Increase the angle of inclination.");
       }
       else {
-        setInstruction("Line too low. Decrease the angle of inclination. ");
+        setInstruction("Line too low. Decrease the angle of inclination.");
       }
       return false;
     }
@@ -295,7 +295,7 @@ function checkForTutorialScore(stack) {
   }
 
   if (!acceptableLength(stack.length)) {
-    setInstruction(currentTutorial.length_error_instructions + ' Clearing last line');
+    setInstruction(`${currentTutorial.length_error_instructions} Clearing last line.`);
     currentTutorial.score = 0;
     undo(canvas, ctx);
     return;
@@ -305,7 +305,7 @@ function checkForTutorialScore(stack) {
   }
 
   if (!checkOrientation(stack)) {
-    setInstruction(currentTutorial.orientation_error_instructions + ' Clearing last line');
+    setInstruction(`${currentTutorial.orientation_error_instructions} Clearing last line.`);
     currentTutorial.score = 0;
     undo(canvas, ctx);
     return;
@@ -318,10 +318,10 @@ function checkForTutorialScore(stack) {
     if (currentTutorial.nextTutorial) {
       currentTutorial = currentTutorial.nextTutorial;
       lastKnownCoord = { x: stack[stack.length - 1].x, y: stack[stack.length - 1].y };
-      setInstruction('Success! Tutorial ' + currentTutorial.id + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
+      setInstruction(`Success with Tutorial ${currentTutorial.name} ${currentTutorial.draw_instructions}.`);
     }
     else {
-      setInstruction('Success!');
+      setInstruction('Success.');
 
       // Smoothen if it's an arc
       if (currentTutorial.name == 'Arc line 3') {
@@ -332,7 +332,7 @@ function checkForTutorialScore(stack) {
     }
   }
   else {
-    setInstruction('Again Tutorial ' + currentTutorial.id + " " + currentTutorial.name + " " + currentTutorial.draw_instructions);
+    setInstruction(`Again, Tutorial ${currentTutorial.name} ${currentTutorial.draw_instructions}.`);
   }
 }
 
@@ -357,19 +357,19 @@ function checkIfCoordInRange(mouseX, mouseY, lastPoint) {
   }
   else {
     if ((mouseX - lastPoint.x) > 10) {
-      setInstruction('Move Left for the connecting point');
+      setInstruction('Move Left for the connecting point.');
       return false;
     }
     else if ((lastPoint.x - mouseX) > 10) {
-      setInstruction('Move Right for the connecting point');
+      setInstruction('Move Right for the connecting point.');
       return false;
     }
     if ((mouseY - lastPoint.y) > 10) {
-      setInstruction('Move Up for the connecting point');
+      setInstruction('Move Up for the connecting point.');
       return false;
     }
     else if ((lastPoint.y - mouseY) > 10) {
-      setInstruction('Move Down for the connecting point');
+      setInstruction('Move Down for the connecting point.');
       return false;
     }
   }
@@ -378,17 +378,17 @@ function checkIfCoordInRange(mouseX, mouseY, lastPoint) {
 function checkForLineLength(stack) {
   var xunit = currentTutorial.length * unit;
   if (tutorialModeCheck() && stack.length === xunit) {
-    setInstruction('stop');
+    setInstruction('Stop.');
   }
 }
 
 function checkForContinuePointMode(mouseX, mouseY) {
   if (tutorialModeCheck() && currentTutorial.continueFromLast) {
     drawMode = false;
-    document.getElementById("mode").innerText = "Current Mode: Placement";
+    document.getElementById('mode').innerText = 'Current Mode: Placement';
     if (checkIfCoordInRange(mouseX, mouseY, lastKnownCoord)) {
       drawMode = true;
-      document.getElementById("mode").innerText = "Current Mode: Draw";
+      document.getElementById('mode').innerText = 'Current Mode: Draw';
     }
   }
 }
